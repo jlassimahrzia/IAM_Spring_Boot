@@ -1,0 +1,60 @@
+<div class="flex flex-wrap mt-4">
+    <div class="w-full mb-12 px-4">
+        <div class="relative flex flex-col min-w-0 break-words w-full mb-6 shadow-lg rounded" ngClass="bg-white">
+            <div class="rounded-t mb-0 px-4 py-3 border-0">
+                <div class="flex flex-wrap items-center">
+                  <div class="relative w-full px-4 max-w-full flex-grow flex-1">
+                    <h3 class="font-semibold text-base text-blueGray-700">Authority List</h3>
+                  </div>
+                  <div class="relative w-full px-4 max-w-full flex-grow flex-1 text-right">
+                    <button
+                        class="bg-indigo-500 text-white active:bg-indigo-600 font-bold uppercase text-sm px-6 py-3 rounded shadow hover:shadow-lg outline-none focus:outline-none mr-1 mb-1 ease-linear transition-all duration-150"
+                        type="button"
+                    >
+                        <i class="fa-solid fa-plus"></i> Create new
+                    </button>
+                  </div>
+                </div>
+            </div>
+            <div class="block w-full overflow-x-auto">
+                <table class="items-center w-full bg-transparent border-collapse">
+                    <thead>
+                        <tr>
+                            <th class="px-6 align-middle border border-solid py-3 text-xs uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-left"
+                                ngClass="bg-blueGray-50 text-blueGray-500 border-blueGray-100">
+                                Authority name
+                            </th>
+                            <th class="px-6 align-middle border border-solid py-3 text-xs uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-left"
+                                ngClass="bg-blueGray-50 text-blueGray-500 border-blueGray-100">
+                                Edit
+                            </th>
+                            <th class="px-6 align-middle border border-solid py-3 text-xs uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-left"
+                                ngClass="bg-blueGray-50 text-blueGray-500 border-blueGray-100">
+                                Delete
+                            </th>
+                        </tr>
+                    </thead>
+                    <tr *ngFor="let authority of authorities; let index = index;">
+                        <td
+                            class="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4 font-bold">
+                            {{authority?.authorityname}}
+                        </td>
+                        <td
+                            class="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4 font-bold">
+                            <button class="font-bold rounded-md border border-gray-300 bg-white px-4 py-2 text-xs text-gray-700 shadow-sm 
+                            hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 sm:mt-0 sm:ml-3 sm:w-auto sm:text-sm"
+                            type="button">
+                                <i class="fa-solid fa-pen-to-square"></i> Edit 
+                            </button>
+                        </td>
+                        <td
+                            class="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4 font-bold">
+                            <button class="text-red-500 bg-transparent border border-solid border-red-500 hover:bg-red-500 hover:text-white active:bg-red-600 font-bold uppercase text-xs px-4 py-2 rounded outline-none focus:outline-none mr-1 mb-1 ease-linear transition-all duration-150" type="button">
+                                <i class="fa-solid fa-trash"></i> Delete
+                            </button>
+                        </td>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
