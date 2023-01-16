@@ -30,12 +30,25 @@ export class EmployeeService {
   }
 
   deleteEmployee(id : Number) {
-    let headers = this.getHeader();
-    return this.httpClient.delete(`${environment.SERVER_API_URL}/employee/delete/${id}`, { headers : headers });
+    return this.httpClient.delete(`${environment.SERVER_API_URL}/employee/delete/${id}`, { headers : this.getHeader() });
   }
 
   assignRole(username: String, roleName: String) : Observable<Employee> {
-    return this.httpClient.put<Employee>(`${environment.SERVER_API_URL}/employee/assignRole`, {username, roleName}, {headers : this.getHeader()});
+    return this.httpClient.put<Employee>(`${environment.SERVER_API_URL}/employee/assignRole`, { username, roleName }, { headers : this.getHeader() });
+  }
+
+  loadUserData(username: String) : Observable<Employee> {
+    return this.httpClient.get<Employee>(`${environment.SERVER_API_URL}/employee/loadUser/${username}`, { headers : this.getHeader() })
+  }
+
+  updateProfile(username : String , employee : Employee) : Observable<Employee> {
+    let data = {
+      oldUsername : username,
+      username : employee.username,
+      firstName : employee.firstName,
+      lastName : employee.lastName
+    }
+    return this.httpClient.put<Employee>(`${environment.SERVER_API_URL}/employee/updateProfile`, data , { headers : this.getHeader() })
   }
 
 }

@@ -13,7 +13,6 @@ import { AppComponent } from './app.component';
 import { LoginComponent } from './views/login/login.component';
 import { RegisterComponent } from './views/register/register.component';
 import { AuthComponent } from './layouts/auth/auth.component';
-import { PagesDropdownComponent } from './components/dropdowns/pages-dropdown/pages-dropdown.component';
 import { EmployeeComponent } from './views/employee/employee.component';
 import { SidebarComponent } from './components/sidebar/sidebar.component';
 import { AdminNavbarComponent } from './components/navbars/admin-navbar/admin-navbar.component';
@@ -25,6 +24,9 @@ import { AuthorityComponent } from './views/authority/authority.component';
 import { HomeComponent } from './views/home/home.component';
 import { UserDropdownComponent } from './components/dropdowns/user-dropdown/user-dropdown.component';
 import { ProfileComponent } from './views/profile/profile.component';
+import { JwtService } from './services/jwt.service';
+
+
 
 @NgModule({
   declarations: [
@@ -32,7 +34,6 @@ import { ProfileComponent } from './views/profile/profile.component';
     LoginComponent,
     RegisterComponent,
     AuthComponent,
-    PagesDropdownComponent,
     EmployeeComponent,
     SidebarComponent,
     AdminNavbarComponent,
@@ -55,7 +56,9 @@ import { ProfileComponent } from './views/profile/profile.component';
     BrowserAnimationsModule,
     ToastrModule.forRoot()
   ],
-  providers: [],
+  providers: [
+    JwtService
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

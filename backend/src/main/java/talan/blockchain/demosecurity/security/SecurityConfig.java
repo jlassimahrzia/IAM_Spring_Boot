@@ -27,7 +27,7 @@ public class SecurityConfig {
                 .authorizeHttpRequests()
                 .requestMatchers("/login","/api/employee/save").permitAll()
                 .requestMatchers("/api/role/save", "/api/authority/save").hasAuthority("CREATE")
-                .requestMatchers("/api/employee/update","/api/role/update","/api/authority/update","/api/role/assignAuthority","/api/employee/assignRole").hasAuthority("UPDATE")
+                .requestMatchers("/api/employee/changePassword", "/api/employee/updateProfile","/api/role/update","/api/authority/update","/api/role/assignAuthority","/api/employee/assignRole").hasAuthority("UPDATE")
                 .requestMatchers("/api/employee/delete/*","/api/role/delete","/api/authority/delete").hasAuthority("DELETE")
                 .requestMatchers("/api/employee/list","/api/employee/loadUser/*","/api/role/list","/api/authority/list").hasAuthority("READ")
                 .anyRequest().authenticated()

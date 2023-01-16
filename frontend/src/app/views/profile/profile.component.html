@@ -1,1 +1,201 @@
-<p>profile works!</p>
+<div class="flex flex-wrap">
+
+    <!-- User information -->
+    <div class="w-full lg:w-8/12 px-4">
+        <div class="relative flex flex-col min-w-0 break-words bg-white w-full mb-6 shadow-xl rounded-lg mt-16">
+            <!-- Herader -->
+            <div class="rounded-t mb-0 px-4 py-3 border-0">
+                <div class="flex flex-wrap items-center">
+                    <div class="relative w-full px-4 max-w-full flex-grow flex-1">
+                        <h3 class="font-semibold text-base text-blueGray-700">Role List</h3>
+                    </div>
+                </div>
+            </div>
+            <!-- Role List -->
+            <div class="block w-full overflow-x-auto">
+                <table class="items-center w-full bg-transparent border-collapse">
+                    <thead>
+                        <tr>
+                            <th class="px-6 align-middle border border-solid py-3 text-xs uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-left"
+                                ngClass="bg-blueGray-50 text-blueGray-500 border-blueGray-100">
+                                Role name
+                            </th>
+                            <th class="px-6 align-middle border border-solid py-3 text-xs uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-left"
+                                ngClass="bg-blueGray-50 text-blueGray-500 border-blueGray-100">
+                                Authorities
+                            </th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr *ngFor="let role of user?.roles; let index = index;">
+                            <td
+                                class="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4 font-bold">
+                                {{role?.rolename}}
+                            </td>
+                            <td
+                                class="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4">
+                                <span *ngFor="let authority of role?.authorities" style="padding: 3px !important;">
+                                    <span
+                                        class="text-xs font-semibold inline-block py-1 px-2 uppercase rounded text-lightBlue-600 bg-lightBlue-200 uppercase last:mr-0 mr-1"
+                                        *ngIf="role?.rolename != null">
+                                        {{authority?.authorityname}}
+                                    </span>
+                                </span>
+                            </td>
+                        </tr>
+                </table>
+            </div>
+        </div>
+    </div>
+
+
+    <!-- Update User Information -->
+    <div class="w-full lg:w-4/12 px-4">
+        <div class="relative flex flex-col min-w-0 break-words bg-white w-full mb-6 shadow-xl rounded-lg mt-16">
+            <div class="px-6">
+                <div class="flex flex-wrap justify-center">
+                    <div class="w-full px-4 flex justify-center">
+                        <div class="relative">
+                            <img alt="..." src="assets/img/team-1-800x800.jpg"
+                                class="shadow-xl rounded-full h-auto align-middle border-none absolute -m-16 -ml-20 lg:-ml-16 max-w-150-px" />
+                        </div>
+                    </div>
+                    <div class="w-full px-4 text-center mt-20">
+                        <div class="py-4 lg:pt-4 pt-8">
+                            <h3 class="text-xl font-semibold leading-normal mb-2 text-blueGray-700 mb-2">
+                                {{ user?.firstName | titlecase }} {{ user?.lastName | titlecase }}
+                            </h3>
+                            <div class="text-sm leading-normal mt-0 mb-2 text-blueGray-400 font-bold">
+                                <i class="fas fa-user mr-2 text-lg text-blueGray-400"></i>
+                                {{ user?.username }}
+                            </div>
+                            <div class="mb-2 text-blueGray-600 mt-10">
+                                <button
+                                    class="bg-indigo-500 text-white active:bg-blueGray-600 text-sm font-bold uppercase px-6 py-3 rounded shadow hover:shadow-lg outline-none focus:outline-none mr-1 mb-1 w-full ease-linear transition-all duration-150"
+                                    type="button"
+                                    (click)="openUpdateProfileModal()">
+                                    Update Profile Information
+                                </button>
+                            </div>
+                            <div class="mb-2 text-blueGray-600">
+                                <button
+                                    class="bg-indigo-500 text-white active:bg-blueGray-600 text-sm font-bold uppercase px-6 py-3 rounded shadow hover:shadow-lg outline-none focus:outline-none mr-1 mb-1 w-full ease-linear transition-all duration-150"
+                                    type="button">
+                                    Change Password
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Update profile information Modal -->
+    <div *ngIf="updateProfileModal" class="overflow-x-hidden overflow-y-auto fixed inset-0 z-30 outline-none focus:outline-none justify-center items-center flex"
+    style="width: 800px !important;">
+        <div class="relative w-80 my-6 mx-auto max-w-3xl" style="width: 800px !important;">
+            <!--content-->
+            <div class="border-0 rounded-lg shadow-lg relative flex flex-col w-full bg-white outline-none focus:outline-none" >
+                <!--header-->
+                <div class="flex items-start justify-between p-4 border-b border-solid border-blueGray-200 rounded-t">
+                    <h3 class="text-lg font-semibold">
+                        Update Profile Information
+                    </h3>
+                    <button
+                        class="ml-auto bg-transparent border-0 text-black opacity-5 float-right text-3xl leading-none font-semibold outline-none focus:outline-none"
+                        (click)="closeUpdateProfileModal()">
+                        <span
+                            class="bg-transparent text-black opacity-5 h-6 w-6 text-2xl block outline-none focus:outline-none">
+                            ×
+                        </span>
+                    </button>
+                </div>
+                <form [formGroup]="updateProfileForm" (ngSubmit)="updateProfile()" >
+                <div class="relative transform overflow-hidden rounded-lg bg-white text-left shadow-xl transition-all sm:my-8 sm:w-full sm:max-w-lg">
+                    <!--body-->
+                    <div class="bg-white p-4 sm:p-6 sm:pb-4">
+                        <div class="relative w-full mb-3">
+                            <label
+                              class="block uppercase text-blueGray-600 text-xs font-bold mb-2"
+                              htmlFor="grid-password"
+                            >
+                              Username
+                            </label>
+                            <input
+                              type="text"
+                              class="px-3 py-3 placeholder-blueGray-300 text-blueGray-600 relative bg-white bg-white rounded text-sm border border-blueGray-300 outline-none focus:outline-none focus:shadow-outline w-full"
+                              placeholder="Username"
+                              formControlName="username"
+                              [ngModel]="user?.username"
+                            />
+                            <span class="inline-block align-middle mr-8 text-red-600" *ngIf="updateProfileForm.get('username').dirty&&!updateProfileForm.get('username').valid">
+                                Atleast 3 characters required and no special character allowed.
+                            </span>
+                        </div>
+                        <div class="relative w-full mb-3">
+                            <label
+                              class="block uppercase text-blueGray-600 text-xs font-bold mb-2"
+                              htmlFor="grid-password"
+                            >
+                              Firstname
+                            </label>
+                            <input
+                              type="text"
+                              class="px-3 py-3 placeholder-blueGray-300 text-blueGray-600 relative bg-white bg-white rounded text-sm border border-blueGray-300 outline-none focus:outline-none focus:shadow-outline w-full"
+                              placeholder="Firstname"
+                              formControlName="firstName"
+                              [ngModel]="user?.firstName"
+                            />
+                            <span class="inline-block align-middle mr-8 text-red-600" *ngIf="updateProfileForm.get('firstName').dirty&&!updateProfileForm.get('firstName').valid">
+                                Atleast 3 characters required and no special character allowed.  
+                            </span>
+                        </div>
+                        <div class="relative w-full mb-3">
+                            <label
+                              class="block uppercase text-blueGray-600 text-xs font-bold mb-2"
+                              htmlFor="grid-password"
+                            >
+                              Lastname
+                            </label>
+                            <input
+                              type="text"
+                              class="px-3 py-3 placeholder-blueGray-300 text-blueGray-600 relative bg-white bg-white rounded text-sm border border-blueGray-300 outline-none focus:outline-none focus:shadow-outline w-full"
+                              placeholder="Lastname"
+                              formControlName="lastName"
+                              [ngModel]="user?.lastName"
+                            />
+                            <span class="inline-block align-middle mr-8 text-red-600" *ngIf="updateProfileForm.get('lastName').dirty&&!updateProfileForm.get('lastName').valid">
+                                Atleast 3 characters required and no special character allowed.   
+                            </span>
+                        </div>
+                    </div>
+                    <!-- footer -->
+                    <div class="flex items-center justify-end border-t border-solid border-blueGray-200 rounded-b p-2">
+                        <button
+                            class="font-medium rounded-md border border-gray-300 bg-white px-4 py-2 text-base text-gray-700 shadow-sm 
+                            hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 sm:mt-0 sm:ml-3 sm:w-auto sm:text-sm"
+                            type="button" (click)="closeUpdateProfileModal()" style="margin-right: 10px !important;">
+                            Close
+                        </button>
+                        <button
+                            class="font-medium rounded-md border border-transparent bg-green-600 px-4 py-2 text-base text-white shadow-sm hover:bg-green-700 
+                            focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-offset-2 sm:ml-3 sm:w-auto sm:text-sm"
+                            type="submit" style="background-color: rgb(34 197 94) !important;"
+                            [disabled]="!updateProfileForm.valid">
+                            Save
+                        </button>
+                    </div>
+                </div>
+                </form>
+            </div>
+        </div>
+    </div>
+    <div *ngIf="updateProfileModal" class="opacity-25 fixed inset-0 z-30 bg-black"></div>
+
+
+    <!-- Change password -->
+    
+    
+
+</div>

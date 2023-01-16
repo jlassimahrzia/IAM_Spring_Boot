@@ -1,6 +1,26 @@
+
+<div class="w-full mx-autp items-center flex justify-between md:flex-nowrap flex-wrap md:px-10 px-4">
+    <form
+    class="md:flex hidden flex-row flex-wrap items-center lg:ml-auto mr-3"
+  >
+    <div class="relative flex w-full flex-wrap items-stretch">
+      <span
+        class="z-10 h-full leading-snug font-normal absolute text-center text-blueGray-300 absolute bg-transparent rounded text-base items-center justify-center w-8 pl-3 py-3"
+        ><i class="fas fa-search"></i
+      ></span>
+      <input
+        type="text"
+        placeholder="Search here..."
+        class="border-0 px-3 py-3 placeholder-blueGray-300 text-blueGray-600 relative bg-white bg-white rounded text-sm shadow outline-none focus:outline-none focus:ring w-full pl-10"
+      />
+    </div>
+</form>
+</div>
+
 <div class="flex flex-wrap mt-4">
     <div class="w-full mb-12 px-4">
         <div class="relative flex flex-col min-w-0 break-words w-full mb-6 shadow-lg rounded" ngClass="bg-white">
+            <!-- Header -->
             <div class="rounded-t mb-0 px-4 py-3 border-0">
                 <div class="flex flex-wrap items-center">
                     <div class="relative w-full px-4 max-w-full flex-grow flex-1">
@@ -10,6 +30,7 @@
                     </div>
                 </div>
             </div>
+            <!-- Employee List -->
             <div class="block w-full overflow-x-auto">
                 <table class="items-center w-full bg-transparent border-collapse">
                     <thead>
@@ -77,6 +98,11 @@
                                             style="cursor: pointer;">
                                             <i class="fa-solid fa-arrow-right"></i> Assign Role
                                         </a>
+                                        <a  
+                                            class="text-sm py-2 px-4 font-normal block w-full whitespace-nowrap bg-transparent text-blueGray-700"
+                                            style="cursor: pointer;">
+                                            <i class="fa-solid fa-square-minus"></i> Reject Role
+                                        </a>
                                     </div>
                                 </div>
                             </td>
@@ -111,7 +137,6 @@
                     <div class="bg-white px-4 pt-5 pb-4 sm:p-6 sm:pb-4">
                         <div class="sm:flex sm:items-start">
                           <div class="mx-auto flex h-12 w-12 flex-shrink-0 items-center justify-center rounded-full bg-red-100 sm:mx-0 sm:h-10 sm:w-10">
-                            <!-- Heroicon name: outline/exclamation-triangle -->
                             <svg class="h-6 w-6 text-red-600" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" aria-hidden="true">
                               <path stroke-linecap="round" stroke-linejoin="round" d="M12 10.5v3.75m-9.303 3.376C1.83 19.126 2.914 21 4.645 21h14.71c1.73 0 2.813-1.874 1.948-3.374L13.949 4.88c-.866-1.501-3.032-1.501-3.898 0L2.697 17.626zM12 17.25h.007v.008H12v-.008z" />
                             </svg>
@@ -208,4 +233,5 @@
     </div>
     <div *ngIf="assignRoleModal" class="opacity-25 fixed inset-0 z-30 bg-black"></div>
     <!-- END Assign Role Modal -->
+
 </div>

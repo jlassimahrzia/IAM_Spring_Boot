@@ -1,9 +1,7 @@
 package talan.blockchain.demosecurity.controller;
 
 import org.springframework.web.bind.annotation.*;
-import talan.blockchain.demosecurity.DTO.AssignRoleDTO;
-import talan.blockchain.demosecurity.DTO.DeleteDTO;
-import talan.blockchain.demosecurity.DTO.UpdateDTO;
+import talan.blockchain.demosecurity.DTO.*;
 import talan.blockchain.demosecurity.entities.Employee;
 import talan.blockchain.demosecurity.services.interfaces.EmployeeService;
 
@@ -30,9 +28,14 @@ public class EmployeeController {
         return employeeService.getEmployee();
     }
 
-    @PutMapping("/update")
-    Employee updateEmployeeByUsername(@RequestBody UpdateDTO<Employee> employeeDTO){
-        return employeeService.updateEmployeeByUsername(employeeDTO.getName(), employeeDTO.getNewValues());
+    @PutMapping("/changePassword")
+    Employee changeEmployeePassword(@RequestBody ChangePasswordDTO changePasswordDTO){
+        return employeeService.changeEmployeePassword(changePasswordDTO.getUsername(), changePasswordDTO.getNewPassword());
+    }
+
+    @PutMapping("/updateProfile")
+    Employee updateEmployeeInfo(@RequestBody UpdateUserInfoDTO updateUserInfoDTO){
+        return employeeService.UpdateEmployeeInfo(updateUserInfoDTO);
     }
 
     @DeleteMapping("/delete")
@@ -46,8 +49,13 @@ public class EmployeeController {
     }
 
     @PutMapping("/assignRole")
-    Employee assignRole(@RequestBody AssignRoleDTO assignRoleDTO){
+    Employee assignRole(@RequestBody roleEmployeeDTO assignRoleDTO){
         return employeeService.assignRole(assignRoleDTO.getUsername(), assignRoleDTO.getRoleName());
+    }
+
+    @PutMapping("/rejectRole")
+    Employee rejectRole(@RequestBody roleEmployeeDTO assignRoleDTO){
+        return employeeService.rejectRole(assignRoleDTO.getUsername(), assignRoleDTO.getRoleName());
     }
 
     @GetMapping("/loadUser/{username}")

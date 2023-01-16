@@ -24,9 +24,7 @@ public class UserDetailsServiceImp implements UserDetailsService {
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        System.out.println("Before search");
         Employee employee = employeeRepository.findByUsername(username);
-        System.out.println("After search : "+employee);
         if(employee == null) throw  new UsernameNotFoundException("employee not exist ...");
 
         // Preparer les authorisations sous forme de collection d'objets comprehenssible par spring security contexte

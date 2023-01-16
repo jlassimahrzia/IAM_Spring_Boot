@@ -1,5 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
+import { JwtService } from 'src/app/services/jwt.service';
+import { Employee } from "src/app/models/employee.model";
+import { EmployeeService } from 'src/app/services/employee.service';
+import { Token } from "src/app/models/token.model";
 
 @Component({
   selector: 'app-admin-navbar',
@@ -8,11 +12,29 @@ import { Router } from '@angular/router';
 })
 export class AdminNavbarComponent implements OnInit {
 
-  constructor(private router: Router) { 
+  user : Employee ;
+
+  constructor(private router: Router,
+    private jwtService: JwtService,
+    private employeeService : EmployeeService) { 
     
   }
 
   ngOnInit(): void {
+    this.getUserInformation()
+  }
+
+  getUserInformation() : void {
+    let tokendecode : Token = this.jwtService.DecodeToken() ;
+    this.employeeService.loadUserData(tokendecode.sub).subscribe({
+      next : (res : Employee) => {
+        this.user = res ;
+        console.log(this.user);
+      },
+      error: err => {
+        console.log("err", err);
+      }
+    })  
   }
 
   ngOnChanges(): void {

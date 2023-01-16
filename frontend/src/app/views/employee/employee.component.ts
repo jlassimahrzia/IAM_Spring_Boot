@@ -4,12 +4,14 @@ import { EmployeeService } from "src/app/services/employee.service";
 import { ToastrService } from 'ngx-toastr';
 import { Role } from "src/app/models/role.model";
 import { RoleService } from "src/app/services/role.service";
+import { FormGroup, Validators, FormControl, FormArray } from '@angular/forms';
 
 @Component({
   selector: 'app-employee',
   templateUrl: './employee.component.html',
   styleUrls: ['./employee.component.css']
 })
+
 
 export class EmployeeComponent implements OnInit {
 
@@ -18,22 +20,47 @@ export class EmployeeComponent implements OnInit {
 
   deleteModal : Boolean = false ;
   assignRoleModal : Boolean = false ;
+  rejectRoleModal : Boolean = false ;
 
   id: Number ;
   username : String ;
-  employees : Employee[];
-  roles : Role[];
-  rolesNotAssigned : Role[]; 
-  selectedRole : any;
+  employees : Employee[] ;
+  roles : Role[] ;
+  rolesNotAssigned : Role[] ; 
+  selectedRole : Role[] ;
+
+  roleCheckboxList : any[] = [] ;
+  rejectRoleForm : FormGroup;
   
   constructor(private employeeService: EmployeeService,
     private toastr: ToastrService,
     private roleService: RoleService) { }
 
   ngOnInit(): void {
-    this.getEmployeesList()
-    this.getRolesList()
+    this.getEmployeesList();
+    this.getRolesList();
+    this.rejectRoleForm = new FormGroup({
+      rejectedRolesd: new FormArray([]),
+    });
+    this.patchValues();
   }
+
+  private patchValues(): void {
+    // get array control
+    const formArray = this.rejectRoleForm.get('rejectedRoles') as FormArray;
+    // loop for each existing value
+    this.roleCheckboxList.forEach((checkbox) => {
+      // add new control to FormArray
+      formArray.push(
+        // here the new FormControl with item value from RADIO_LIST_FROM_DATABASE
+        new FormGroup({
+          name: new FormControl(checkbox.name),
+          checked: new FormControl(checkbox.checked),
+        })
+      );
+    });
+  }
+
 
   getEmployeesList() : void {
     this.employeeService.getEmployees().subscribe({
@@ -50,12 +77,20 @@ export class EmployeeComponent implements OnInit {
     this.roleService.getRoles().subscribe({
       next : (res: Role[]) => {
         this.roles = res;
+        this.setCheckboxRoleList();
+        console.log(this.roleCheckboxList);       
       },
       error: err => {
         console.log("err", err);
       }
     });
-    
+
+  }
+
+  setCheckboxRoleList() : void {
+    this.roles.forEach((role : Role) => {
+      this.roleCheckboxList.push({ name : role.rolename , checked : false});
+    });
   }
 
   toggleDropdown(event, index) : void {
@@ -67,6 +102,8 @@ export class EmployeeComponent implements OnInit {
     }
     this.line = index ;
   }
+
+  /** Delete employee */
 
   openDeleteModal(id : Number) : void {
     this.id = id ;
@@ -94,6 +131,8 @@ export class EmployeeComponent implements OnInit {
     })
     
   }
+
+  /** Assign role */
 
   openAssignRoleModal(username : String, userRoles : Role[]) : void {
     this.username = username;
@@ -128,4 +167,21 @@ export class EmployeeComponent implements OnInit {
     });
   }
 
+  /** Reject Role */
+
+  openRejectRoleModal(username : String) : void {
+    this.username = username ;
+    this.rejectRoleModal = true ; 
+  }
+
+  closeRejectRoleModal() : void {
+    this.username = null ;
+    this.rejectRoleModal = false ; 
+  }
+
+  rejectRole() : void {
+    console.log(this.rejectRoleForm.value.rejectedRoles);
+    
+  }
+ 
 }

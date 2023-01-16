@@ -39,7 +39,7 @@ public class RoleController {
         return roleService.deleteRoleByName(deleteDTO.getName());
     }
 
-    @PostMapping("assignAuthority")
+    @PutMapping("assignAuthority")
     Role assignAuthority(@RequestBody AssignAuthorityDTO assignAuthorityDTO){
         return roleService.assignAuthority(assignAuthorityDTO.getRoleName(), assignAuthorityDTO.getAuthorityName());
     }

@@ -4,6 +4,7 @@ import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
+import talan.blockchain.demosecurity.DTO.UpdateUserInfoDTO;
 import talan.blockchain.demosecurity.dao.EmployeeRepository;
 import talan.blockchain.demosecurity.dao.RoleRepository;
 import talan.blockchain.demosecurity.entities.Employee;
@@ -44,13 +45,25 @@ public class EmployeeServiceImpl implements EmployeeService {
     }
 
     @Override
-    public Employee updateEmployeeByUsername(String oldusername, Employee newEmployee) {
-        Employee employee = employeeRepository.findByUsername(oldusername);
-        if(employee!= null){
-            if(employee.getPassword() != null){
-                employee.setPassword(newEmployee.getPassword());
-                return employeeRepository.save(employee);
+    public Employee changeEmployeePassword(String username, String newPassword) {
+        Employee employee = employeeRepository.findByUsername(username);
+        if(employee!= null) {
+            if (employee.getPassword() != null) {
+                    employee.setPassword(encoder.encode(newPassword));
+                    return employeeRepository.save(employee);
             }
+        }
+        return null;
+    }
+
+    @Override
+    public Employee UpdateEmployeeInfo(UpdateUserInfoDTO updateUserInfoDTO) {
+        Employee employee = employeeRepository.findByUsername(updateUserInfoDTO.getOldUsername());
+        if(employee!= null) {
+            employee.setUsername(updateUserInfoDTO.getUsername());
+            employee.setFirstName(updateUserInfoDTO.getFirstName());
+            employee.setLastName(updateUserInfoDTO.getLastName());
+            return employeeRepository.save(employee);
         }
         return null;
     }
@@ -77,6 +90,17 @@ public class EmployeeServiceImpl implements EmployeeService {
         Role role = roleRepository.findByRolename(roleName);
         if(employee!= null && role != null){
             employee.addRole(role);
+            return employeeRepository.save(employee);
+        }
+        return null;
+    }
+
+    @Override
+    public Employee rejectRole(String username, String roleName) {
+        Employee employee = employeeRepository.findByUsername(username);
+        Role role = roleRepository.findByRolename(roleName);
+        if(employee!= null && role != null){
+            employee.removeRole(role);
             return employeeRepository.save(employee);
         }
         return null;

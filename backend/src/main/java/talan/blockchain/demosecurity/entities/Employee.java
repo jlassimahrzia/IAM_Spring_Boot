@@ -31,17 +31,13 @@ public class Employee implements Serializable {
     @ManyToMany
     private List<Role> roles = new ArrayList<>();
 
-    public void addRole(Role role) {
-        this.roles.add(role);
-    }
+    public void addRole(Role role) { this.roles.add(role); }
 
     public void removeRoles(List<Role> roles){
         this.roles.removeAll(roles);
     }
 
-    public void removeRole(Role role){
-        this.roles.remove(role);
-    }
+    public void removeRole(Role role){ this.roles.remove(role); }
 
     public List<Role> getRoles() {
         return roles;

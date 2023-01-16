@@ -1,5 +1,5 @@
 export class Authority {
-    id: Number;
+    id?: Number;
     authorityname: String;
-    isEnable: boolean;
+    isEnable?: boolean;
 }

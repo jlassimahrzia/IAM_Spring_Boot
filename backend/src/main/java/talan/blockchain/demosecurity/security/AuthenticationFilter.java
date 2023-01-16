@@ -29,7 +29,6 @@ public class AuthenticationFilter extends UsernamePasswordAuthenticationFilter {
             throws AuthenticationException {
         try {
             employeeLogin = new ObjectMapper().readValue(request.getInputStream(), EmployeeLogin.class);
-            System.out.println("Login credential "+ employeeLogin.getPassword() + employeeLogin.getUsername());
             return authenticationManagerBuilder.getObject().authenticate(new UsernamePasswordAuthenticationToken(employeeLogin.getUsername(), employeeLogin.getPassword()));
         }catch (Exception e) {
             throw new RuntimeException(e);

@@ -1,8 +1,8 @@
 import { Authority } from "../models/authority.model";
 
 export class Role {
-    id: Number;
+    id?: Number;
     rolename: String;
-    authorities: Array<Authority>;
-    isEnable: boolean;
+    authorities?: Array<Authority>;
+    isEnable?: boolean;
 }

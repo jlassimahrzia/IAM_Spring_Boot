@@ -9,7 +9,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 @EqualsAndHashCode
-public class AssignRoleDTO {
+public class roleEmployeeDTO {
     private String username;
     private String roleName;
 }

@@ -6,6 +6,7 @@ import { AuthorityComponent } from './views/authority/authority.component';
 import { EmployeeComponent } from './views/employee/employee.component';
 import { HomeComponent } from './views/home/home.component';
 import { LoginComponent } from './views/login/login.component';
+import { ProfileComponent } from './views/profile/profile.component';
 import { RegisterComponent } from './views/register/register.component';
 import { RoleComponent } from './views/role/role.component';
 
@@ -28,6 +29,7 @@ const routes: Routes = [
       {path: "employee", component: EmployeeComponent},
       {path: "role", component: RoleComponent},
       {path: "authority", component: AuthorityComponent},
+      {path: "profile", component: ProfileComponent},
       {path: "", redirectTo: "home", pathMatch: "full"}
     ]
   }

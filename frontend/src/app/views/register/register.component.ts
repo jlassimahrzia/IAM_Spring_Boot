@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { FormBuilder, Validators  } from '@angular/forms';
+import { FormBuilder, FormGroup, Validators  } from '@angular/forms';
 import { ToastrService } from 'ngx-toastr';
 import { Router } from '@angular/router';
 import { AuthService } from "src/app/services/auth.service";
@@ -12,7 +12,7 @@ import { Employee } from "src/app/models/employee.model";
 
 export class RegisterComponent implements OnInit {
 
-  registerForm = this.fb.group({
+  registerForm : FormGroup = this.fb.group({
     firstName: [ null , [
       Validators.required,
       Validators.pattern(/^[A-z0-9]*$/),
@@ -47,7 +47,7 @@ export class RegisterComponent implements OnInit {
 
   register = () => {
 
-    const employee : Employee = {
+    let employee : Employee = {
       firstName: this.registerForm.value.firstName,
       lastName: this.registerForm.value.lastName,
       username: this.registerForm.value.username,

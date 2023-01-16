@@ -24,4 +24,16 @@ export class AuthorityService {
     return this.httpClient.get<Authority[]>(`${environment.SERVER_API_URL}/authority/list`, {headers : this.getHeader()})
   }
 
+  createAuthority(authority : Authority) : Observable<Authority> {
+    return this.httpClient.post<Authority>(`${environment.SERVER_API_URL}/authority/save`, authority , {headers : this.getHeader()})
+  }
+
+  editAuthority(name : String , newValues : Authority) : Observable<Authority> {
+    return this.httpClient.put<Authority>(`${environment.SERVER_API_URL}/authority/update`, { name , newValues },  {headers : this.getHeader()})
+  }
+
+  deleteAuthority(name : String) : Observable<any> {
+    return this.httpClient.request('delete',`${environment.SERVER_API_URL}/authority/delete`, {headers : this.getHeader(), body: {name : name}})
+  } 
+
 }
