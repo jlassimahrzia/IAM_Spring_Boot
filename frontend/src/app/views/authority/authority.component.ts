@@ -28,6 +28,8 @@ export class AuthorityComponent implements OnInit {
 
   authorityname : String ;
 
+  searchText : string ;
+
   constructor(private authorityService: AuthorityService,
     private fb: FormBuilder,
     private toastr: ToastrService) { }

@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { RoleService } from "src/app/services/role.service";
 import { Role } from "src/app/models/role.model";
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { FormBuilder, FormGroup, Validators, FormArray, FormControl } from '@angular/forms';
 import { AuthorityService } from "src/app/services/authority.service";
 import { Authority } from "src/app/models/authority.model";
 import { ToastrService } from 'ngx-toastr';
@@ -28,6 +28,8 @@ export class RoleComponent implements OnInit {
   editModal : Boolean = false ;
   assignAuthorityModal : Boolean = false ;
 
+  searchText : string ;
+
   createRoleForm : FormGroup = this.fb.group({
     rolename: [ null , [Validators.required]],
     authorities: []
@@ -37,6 +39,10 @@ export class RoleComponent implements OnInit {
     newrolename: [ null , [Validators.required]]
   })
 
+  rejectAuthorityForm : FormGroup ;
+  authorityCheckboxList : any[] = [] ;
+  rejectAuthorityModal : Boolean = false ;
+
   constructor(private roleService: RoleService,
     private fb: FormBuilder,
     private toastr: ToastrService,
@@ -45,6 +51,9 @@ export class RoleComponent implements OnInit {
   ngOnInit(): void {
     this.getRolesList()
     this.getAuthorityList()
+    this.rejectAuthorityForm = new FormGroup({
+      rejectedAuthorities: new FormArray([]),
+    })
   }
   
   toggleDropdown(event, index) : void {
@@ -206,5 +215,69 @@ export class RoleComponent implements OnInit {
       })
     });
   }
+
+
+  /** Reject Role */
+
+  private patchValues(): void {
+    // get array control
+    const formArray = this.rejectAuthorityForm.get('rejectedAuthorities') as FormArray;
+    // loop for each existing value
+    this.authorityCheckboxList.forEach((checkbox) => {
+      // add new control to FormArray
+      formArray.push(
+        // here the new FormControl with item value 
+        new FormGroup({
+          name: new FormControl(checkbox.name),
+          checked: new FormControl(checkbox.checked),
+        })
+      );
+    });
+  }
+
+  setCheckboxAuthorityList(list : Authority[]) : void {
+    list.forEach((role : Authority) => {
+      this.authorityCheckboxList.push({ name : role.authorityname, checked : false});
+    });
+    this.patchValues();
+  }
+
+  get refForm() {
+    return this.rejectAuthorityForm.get('rejectedAuthorities') as FormArray;
+  }
+
+  openRejectAuthorityModal(rolename : String, list: Authority[]) : void {
+    this.rolename = rolename ;
+    this.setCheckboxAuthorityList(list);
+    this.rejectAuthorityModal = true ; 
+  }
+
+  closeRejectAuthorityModal() : void {
+    this.rolename = null ;
+    this.authorityCheckboxList = [];
+    this.rejectAuthorityModal = false ; 
+    this.dropdownPopoverShow = false ;
+  }
+
+  rejectAuthority() : void {
+    this.rejectAuthorityForm.value.rejectedAuthorities.forEach((authority) => {
+      if(authority.checked){
+        this.roleService.rejectAuthority(this.rolename, authority.name).subscribe({
+          next : (res : Role) => {
+            console.log("res", res);
+            this.toastr.success(`Authority ${authority.name} rejected successfully.`,'Success');
+            this.closeRejectAuthorityModal()
+            this.dropdownPopoverShow = false;
+            this.ngOnInit();
+          },
+          error: err => {
+            console.log("err", err);
+            this.toastr.error('Something went wrong!','Error')
+          }
+        })
+      }
+    });
+  }
+
  
 }

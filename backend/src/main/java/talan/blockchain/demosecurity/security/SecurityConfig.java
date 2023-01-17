@@ -2,6 +2,7 @@ package talan.blockchain.demosecurity.security;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
@@ -26,10 +27,11 @@ public class SecurityConfig {
         http.csrf().disable()
                 .authorizeHttpRequests()
                 .requestMatchers("/login","/api/employee/save").permitAll()
-                .requestMatchers("/api/role/save", "/api/authority/save").hasAuthority("CREATE")
-                .requestMatchers("/api/employee/changePassword", "/api/employee/updateProfile","/api/role/update","/api/authority/update","/api/role/assignAuthority","/api/employee/assignRole").hasAuthority("UPDATE")
-                .requestMatchers("/api/employee/delete/*","/api/role/delete","/api/authority/delete").hasAuthority("DELETE")
-                .requestMatchers("/api/employee/list","/api/employee/loadUser/*","/api/role/list","/api/authority/list").hasAuthority("READ")
+                .requestMatchers(HttpMethod.POST,"/api/role/save", "/api/authority/save").hasAuthority("CREATE")
+                .requestMatchers(HttpMethod.PUT,"/api/employee/changePassword", "/api/employee/updateProfile","/api/role/update","/api/authority/update"
+                        ,"/api/role/assignAuthority","/api/employee/assignRole","/api/employee/rejectRole","/api/role/rejectAuthority").hasAuthority("UPDATE")
+                .requestMatchers(HttpMethod.DELETE,"/api/employee/delete/*","/api/role/delete","/api/authority/delete").hasAuthority("DELETE")
+                .requestMatchers(HttpMethod.GET,"/api/employee/list","/api/employee/loadUser/*","/api/role/list","/api/authority/list").hasAuthority("READ")
                 .anyRequest().authenticated()
                 .and()
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)

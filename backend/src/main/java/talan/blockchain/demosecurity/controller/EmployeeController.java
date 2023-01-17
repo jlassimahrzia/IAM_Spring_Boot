@@ -8,7 +8,7 @@ import talan.blockchain.demosecurity.services.interfaces.EmployeeService;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/employee")
+@RequestMapping("/api/employee/")
 @CrossOrigin("*")
 public class EmployeeController {
 
@@ -18,47 +18,47 @@ public class EmployeeController {
         this.employeeService = employeeService;
     }
 
-    @PostMapping("/save")
+    @PostMapping("save")
     Employee saveEmployee(@RequestBody Employee employee){
         return employeeService.saveEmployee(employee);
     }
 
-    @GetMapping("/list")
+    @GetMapping("list")
     List<Employee> getEmployees(){
         return employeeService.getEmployee();
     }
 
-    @PutMapping("/changePassword")
+    @PutMapping("changePassword")
     Employee changeEmployeePassword(@RequestBody ChangePasswordDTO changePasswordDTO){
         return employeeService.changeEmployeePassword(changePasswordDTO.getUsername(), changePasswordDTO.getNewPassword());
     }
 
-    @PutMapping("/updateProfile")
+    @PutMapping("updateProfile")
     Employee updateEmployeeInfo(@RequestBody UpdateUserInfoDTO updateUserInfoDTO){
         return employeeService.UpdateEmployeeInfo(updateUserInfoDTO);
     }
 
-    @DeleteMapping("/delete")
+    @DeleteMapping("delete")
     int deleteEmployeeByUsername(@RequestBody DeleteDTO deleteDTO){
         return employeeService.deleteEmployeeByUsername(deleteDTO.getName());
     }
 
-    @DeleteMapping("/delete/{id}")
+    @DeleteMapping("delete/{id}")
     void deleteEmployeeById(@PathVariable Long id){
         employeeService.deleteEmployeeById(id);
     }
 
-    @PutMapping("/assignRole")
+    @PutMapping("assignRole")
     Employee assignRole(@RequestBody roleEmployeeDTO assignRoleDTO){
         return employeeService.assignRole(assignRoleDTO.getUsername(), assignRoleDTO.getRoleName());
     }
 
-    @PutMapping("/rejectRole")
+    @PutMapping("rejectRole")
     Employee rejectRole(@RequestBody roleEmployeeDTO assignRoleDTO){
         return employeeService.rejectRole(assignRoleDTO.getUsername(), assignRoleDTO.getRoleName());
     }
 
-    @GetMapping("/loadUser/{username}")
+    @GetMapping("loadUser/{username}")
     Employee loadUserByUsername(@PathVariable String username){
         return employeeService.getUserByUsername(username);
     }

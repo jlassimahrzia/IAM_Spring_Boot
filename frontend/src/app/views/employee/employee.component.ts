@@ -4,7 +4,8 @@ import { EmployeeService } from "src/app/services/employee.service";
 import { ToastrService } from 'ngx-toastr';
 import { Role } from "src/app/models/role.model";
 import { RoleService } from "src/app/services/role.service";
-import { FormGroup, Validators, FormControl, FormArray } from '@angular/forms';
+import { FormGroup, FormControl, FormArray } from '@angular/forms';
+
 
 @Component({
   selector: 'app-employee',
@@ -30,7 +31,9 @@ export class EmployeeComponent implements OnInit {
   selectedRole : Role[] ;
 
   roleCheckboxList : any[] = [] ;
-  rejectRoleForm : FormGroup;
+  rejectRoleForm : FormGroup ;
+
+  searchText : string ;
   
   constructor(private employeeService: EmployeeService,
     private toastr: ToastrService,
@@ -40,27 +43,9 @@ export class EmployeeComponent implements OnInit {
     this.getEmployeesList();
     this.getRolesList();
     this.rejectRoleForm = new FormGroup({
-      rejectedRolesd: new FormArray([]),
-    });
-    this.patchValues();
+      rejectedRoles: new FormArray([]),
+    })
   }
-
-  private patchValues(): void {
-    // get array control
-    const formArray = this.rejectRoleForm.get('rejectedRoles') as FormArray;
-    // loop for each existing value
-    this.roleCheckboxList.forEach((checkbox) => {
-      // add new control to FormArray
-      formArray.push(
-        // here the new FormControl with item value from RADIO_LIST_FROM_DATABASE
-        new FormGroup({
-          name: new FormControl(checkbox.name),
-          checked: new FormControl(checkbox.checked),
-        })
-      );
-    });
-  }
-
 
   getEmployeesList() : void {
     this.employeeService.getEmployees().subscribe({
@@ -76,21 +61,13 @@ export class EmployeeComponent implements OnInit {
   getRolesList() : void {
     this.roleService.getRoles().subscribe({
       next : (res: Role[]) => {
-        this.roles = res;
-        this.setCheckboxRoleList();
-        console.log(this.roleCheckboxList);       
+        this.roles = res;       
       },
       error: err => {
         console.log("err", err);
       }
     });
 
-  }
-
-  setCheckboxRoleList() : void {
-    this.roles.forEach((role : Role) => {
-      this.roleCheckboxList.push({ name : role.rolename , checked : false});
-    });
   }
 
   toggleDropdown(event, index) : void {
@@ -169,19 +146,67 @@ export class EmployeeComponent implements OnInit {
 
   /** Reject Role */
 
-  openRejectRoleModal(username : String) : void {
+  private patchValues(): void {
+    // get array control
+    const formArray = this.rejectRoleForm.get('rejectedRoles') as FormArray;
+    // loop for each existing value
+    this.roleCheckboxList.forEach((checkbox) => {
+      // add new control to FormArray
+      formArray.push(
+        // here the new FormControl with item value from RADIO_LIST_FROM_DATABASE
+        new FormGroup({
+          name: new FormControl(checkbox.name),
+          checked: new FormControl(checkbox.checked),
+        })
+      );
+    });
+  }
+
+  
+  setCheckboxRoleList(list : Role[]) : void {
+    list.forEach((role : Role) => {
+      this.roleCheckboxList.push({ name : role.rolename , checked : false});
+    });
+    this.patchValues();
+  }
+
+  get refForm() {
+    return this.rejectRoleForm.get('rejectedRoles') as FormArray;
+  }
+
+  openRejectRoleModal(username : String, list: Role[]) : void {
     this.username = username ;
-    this.rejectRoleModal = true ; 
+    this.setCheckboxRoleList(list);
+    this.rejectRoleModal = true ;
   }
 
   closeRejectRoleModal() : void {
     this.username = null ;
+    this.roleCheckboxList = [];
     this.rejectRoleModal = false ; 
+    this.dropdownPopoverShow = false ;
   }
 
   rejectRole() : void {
-    console.log(this.rejectRoleForm.value.rejectedRoles);
-    
+    this.rejectRoleForm.value.rejectedRoles.forEach((role) => {
+      if(role.checked){
+        this.employeeService.rejectRole(this.username, role.name).subscribe({
+          next : (res : Employee) => {
+            console.log("res", res);
+            this.toastr.success(`Role ${role.name} rejected successfully.`,'Success');
+            this.closeRejectRoleModal()
+            this.dropdownPopoverShow = false;
+            this.ngOnInit();
+          },
+          error: err => {
+            console.log("err", err);
+            this.toastr.error('Something went wrong!','Error')
+          }
+        })
+      }
+    });
   }
+
+
  
 }

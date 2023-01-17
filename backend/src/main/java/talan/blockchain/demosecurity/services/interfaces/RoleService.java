@@ -11,4 +11,6 @@ public interface RoleService {
     int deleteRoleByName(String rolename);
 
     Role assignAuthority(String roleName, String authorityName);
+
+    Role rejectAuthority(String roleName, String authorityName);
 }

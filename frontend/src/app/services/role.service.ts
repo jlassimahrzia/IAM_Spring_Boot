@@ -41,4 +41,9 @@ export class RoleService {
     return this.httpClient.request('delete',`${environment.SERVER_API_URL}/role/delete`, {headers : this.getHeader(), body: {name : name}})
   } 
 
+  rejectAuthority(roleName: String, authorityName: String) : Observable<Role> {
+    return this.httpClient.put<Role>(`${environment.SERVER_API_URL}/role/rejectAuthority`, { roleName, authorityName }, { headers : this.getHeader() });
+  }
+
+
 }

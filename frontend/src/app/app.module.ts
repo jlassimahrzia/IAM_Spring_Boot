@@ -25,7 +25,7 @@ import { HomeComponent } from './views/home/home.component';
 import { UserDropdownComponent } from './components/dropdowns/user-dropdown/user-dropdown.component';
 import { ProfileComponent } from './views/profile/profile.component';
 import { JwtService } from './services/jwt.service';
-
+import { Ng2SearchPipeModule } from 'ng2-search-filter';
 
 
 @NgModule({
@@ -54,7 +54,8 @@ import { JwtService } from './services/jwt.service';
     HttpClientModule,
     NgSelectModule,
     BrowserAnimationsModule,
-    ToastrModule.forRoot()
+    ToastrModule.forRoot(),
+    Ng2SearchPipeModule
   ],
   providers: [
     JwtService

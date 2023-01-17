@@ -74,4 +74,15 @@ public class RoleServiceImpl implements RoleService {
         }
         return null;
     }
+
+    @Override
+    public Role rejectAuthority(String roleName, String authorityName) {
+        Role role = roleRepository.findByRolename(roleName);
+        Authority authority = authorityRepository.findByAuthorityname((authorityName));
+        if(role != null && authority != null){
+            role.removeAuthority(authority);
+            return roleRepository.save(role);
+        }
+        return null;
+    }
 }

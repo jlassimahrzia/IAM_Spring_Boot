@@ -51,4 +51,8 @@ export class EmployeeService {
     return this.httpClient.put<Employee>(`${environment.SERVER_API_URL}/employee/updateProfile`, data , { headers : this.getHeader() })
   }
 
+  rejectRole(username: String, roleName: String) : Observable<Employee> {
+    return this.httpClient.put<Employee>(`${environment.SERVER_API_URL}/employee/rejectRole`, { username, roleName }, { headers : this.getHeader() });
+  }
+
 }

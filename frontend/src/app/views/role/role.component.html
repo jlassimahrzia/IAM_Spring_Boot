@@ -1,21 +1,32 @@
+<!-- Search -->
+<div class="flex justify-end md:px-10 px-4" style="padding-right: 20px !important;">
+    <form>
+        <div style="width: 500px !important;">
+            <span
+                class="z-10 h-full leading-snug font-normal absolute text-center text-blueGray-300 absolute bg-transparent rounded text-base items-center justify-center w-8 pl-3 py-3"><i
+                    class="fas fa-search"></i></span>
+            <input type="text" placeholder="Search here..." [(ngModel)]="searchText" name="search"
+                class="border-0 px-3 py-3 placeholder-blueGray-300 text-blueGray-600 relative bg-white bg-white rounded text-sm shadow outline-none focus:outline-none focus:ring w-full pl-10" />
+        </div>
+    </form>
+</div>
+
 <div class="flex flex-wrap mt-4">
     <div class="w-full mb-12 px-4">
         <div class="relative flex flex-col min-w-0 break-words w-full mb-6 shadow-lg rounded" ngClass="bg-white">
             <!-- Herader -->
             <div class="rounded-t mb-0 px-4 py-3 border-0">
                 <div class="flex flex-wrap items-center">
-                  <div class="relative w-full px-4 max-w-full flex-grow flex-1">
-                    <h3 class="font-semibold text-base text-blueGray-700">Role List</h3>
-                  </div>
-                  <div class="relative w-full px-4 max-w-full flex-grow flex-1 text-right">
-                    <button
-                        class="bg-indigo-500 text-white active:bg-indigo-600 font-bold uppercase text-sm px-6 py-3 rounded shadow hover:shadow-lg outline-none focus:outline-none mr-1 mb-1 ease-linear transition-all duration-150"
-                        type="button"
-                        (click)="openCreateModal()"
-                    >
-                        <i class="fa-solid fa-plus"></i> Create new
-                    </button>
-                  </div>
+                    <div class="relative w-full px-4 max-w-full flex-grow flex-1">
+                        <h3 class="font-semibold text-base text-blueGray-700">Role List</h3>
+                    </div>
+                    <div class="relative w-full px-4 max-w-full flex-grow flex-1 text-right">
+                        <button
+                            class="bg-indigo-500 text-white active:bg-indigo-600 font-bold uppercase text-sm px-6 py-3 rounded shadow hover:shadow-lg outline-none focus:outline-none mr-1 mb-1 ease-linear transition-all duration-150"
+                            type="button" (click)="openCreateModal()">
+                            <i class="fa-solid fa-plus"></i> Create new
+                        </button>
+                    </div>
                 </div>
             </div>
             <!-- Role List -->
@@ -38,12 +49,13 @@
                         </tr>
                     </thead>
                     <tbody>
-                        <tr *ngFor="let role of roles; let index = index;">
+                        <tr *ngFor="let role of roles  | filter:searchText  ; let index = index;">
                             <td
                                 class="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4 font-bold">
                                 {{role?.rolename}}
                             </td>
-                            <td class="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4">
+                            <td
+                                class="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4">
                                 <span *ngFor="let authority of role?.authorities" style="padding: 3px !important;">
                                     <span
                                         class="text-xs font-semibold inline-block py-1 px-2 uppercase rounded text-lightBlue-600 bg-lightBlue-200 uppercase last:mr-0 mr-1"
@@ -54,29 +66,32 @@
                             </td>
                             <td
                                 class="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4">
-                                <a class="text-blueGray-500 block py-1 px-3" (click)="toggleDropdown($event, index)" style="cursor: poi;">
+                                <a class="text-blueGray-500 block py-1 px-3" (click)="toggleDropdown($event, index)"
+                                    style="cursor: poi;">
                                     <i class="fas fa-ellipsis-v"></i>
                                 </a>
                                 <div class="min-w-48 z-50 absolute">
                                     <div class="bg-white text-base float-left py-2 list-none text-left rounded shadow-lg mt-1 min-w-48"
                                         [ngClass]="dropdownPopoverShow && (line === index) ? 'block' : 'hidden'">
-                                        <a 
+                                        <a (click)="openEditModal(role?.rolename)"
                                             class="text-sm py-2 px-4 font-normal block w-full whitespace-nowrap bg-transparent text-blueGray-700"
-                                            style="cursor: pointer;"
-                                            (click)="openEditModal(role?.rolename)">
+                                            style="cursor: pointer;">
                                             <i class="fa-solid fa-pen-to-square"></i> Edit
                                         </a>
-                                        <a 
+                                        <a (click)="openDeleteModal(role?.rolename)"
                                             class="text-sm py-2 px-4 font-normal block w-full whitespace-nowrap bg-transparent text-blueGray-700"
-                                            style="cursor: pointer;"
-                                            (click)="openDeleteModal(role?.rolename)">
+                                            style="cursor: pointer;">
                                             <i class="fa-solid fa-trash"></i> Delete
                                         </a>
-                                        <a  
+                                        <a (click)="openAssignAuthorityModal(role?.rolename, role?.authorities)"
                                             class="text-sm py-2 px-4 font-normal block w-full whitespace-nowrap bg-transparent text-blueGray-700"
-                                            style="cursor: pointer;"
-                                            (click)="openAssignAuthorityModal(role?.rolename, role?.authorities)">
+                                            style="cursor: pointer;">
                                             <i class="fa-solid fa-arrow-right"></i> Assign Authority
+                                        </a>
+                                        <a (click)="openRejectAuthorityModal(role?.rolename, role?.authorities)"
+                                            class="text-sm py-2 px-4 font-normal block w-full whitespace-nowrap bg-transparent text-blueGray-700"
+                                            style="cursor: pointer;">
+                                            <i class="fa-solid fa-square-minus"></i> Reject Authority
                                         </a>
                                     </div>
                                 </div>
@@ -88,11 +103,13 @@
     </div>
 
     <!-- Create Role Modal START -->
-    <div *ngIf="createRoleModal" class="overflow-x-hidden overflow-y-auto fixed inset-0 z-30 outline-none focus:outline-none justify-center items-center flex"
-    style="width: 800px !important;">
+    <div *ngIf="createRoleModal"
+        class="overflow-x-hidden overflow-y-auto fixed inset-0 z-30 outline-none focus:outline-none justify-center items-center flex"
+        style="width: 800px !important;">
         <div class="relative w-80 my-6 mx-auto max-w-3xl" style="width: 800px !important;">
             <!--content-->
-            <div class="border-0 rounded-lg shadow-lg relative flex flex-col w-full bg-white outline-none focus:outline-none" >
+            <div
+                class="border-0 rounded-lg shadow-lg relative flex flex-col w-full bg-white outline-none focus:outline-none">
                 <!--header-->
                 <div class="flex items-start justify-between p-4 border-b border-solid border-blueGray-200 rounded-t">
                     <h3 class="text-lg font-semibold">
@@ -108,61 +125,53 @@
                     </button>
                 </div>
                 <form [formGroup]="createRoleForm" (ngSubmit)="createRole()">
-                <div class="relative transform overflow-hidden rounded-lg bg-white text-left shadow-xl transition-all sm:my-8 sm:w-full sm:max-w-lg">
-                    <!--body-->
-                    <div class="bg-white p-4 sm:p-6 sm:pb-4">
-                       
+                    <div
+                        class="relative transform overflow-hidden rounded-lg bg-white text-left shadow-xl transition-all sm:my-8 sm:w-full sm:max-w-lg">
+                        <!--body-->
+                        <div class="bg-white p-4 sm:p-6 sm:pb-4">
+
                             <div class="relative w-full mb-3">
-                                <label
-                                  class="block uppercase text-blueGray-600 text-xs font-bold mb-2"
-                                  htmlFor="grid-password"
-                                >
-                                  Role name
+                                <label class="block uppercase text-blueGray-600 text-xs font-bold mb-2"
+                                    htmlFor="grid-password">
+                                    Role name
                                 </label>
-                                <input
-                                  type="text"
-                                  class="px-3 py-3 placeholder-blueGray-300 text-blueGray-600 relative bg-white bg-white rounded text-sm border border-blueGray-300 outline-none focus:outline-none focus:shadow-outline w-full"
-                                  placeholder="Role name"
-                                  formControlName="rolename"
-                                />
-                                <span class="inline-block align-middle mr-8 text-red-600" *ngIf="createRoleForm.get('rolename').dirty&&!createRoleForm.get('rolename').valid">
-                                  This field is required.   
+                                <input type="text"
+                                    class="px-3 py-3 placeholder-blueGray-300 text-blueGray-600 relative bg-white bg-white rounded text-sm border border-blueGray-300 outline-none focus:outline-none focus:shadow-outline w-full"
+                                    placeholder="Role name" formControlName="rolename" />
+                                <span class="inline-block align-middle mr-8 text-red-600"
+                                    *ngIf="createRoleForm.get('rolename').dirty&&!createRoleForm.get('rolename').valid">
+                                    This field is required.
                                 </span>
                             </div>
                             <div class="relative w-full mb-3">
-                                <label
-                                  class="block uppercase text-blueGray-600 text-xs font-bold mb-2"
-                                  htmlFor="grid-password"
-                                >
-                                  Authorities
+                                <label class="block uppercase text-blueGray-600 text-xs font-bold mb-2"
+                                    htmlFor="grid-password">
+                                    Authorities
                                 </label>
-                                <ng-select
-                                    [items]="authorities"
-                                    bindLabel="authorityname"
-                                    placeholder="Select authority"
-                                    appendTo="body"
-                                    [multiple]="true"
+                                <ng-select [items]="authorities" bindLabel="authorityname"
+                                    placeholder="Select authority" appendTo="body" [multiple]="true"
                                     formControlName="authorities">
                                 </ng-select>
                             </div>
-                    </div>
-                    <!-- footer -->
-                    <div class="flex items-center justify-end border-t border-solid border-blueGray-200 rounded-b p-2">
-                        <button
-                            class="font-medium rounded-md border border-gray-300 bg-white px-4 py-2 text-base text-gray-700 shadow-sm 
+                        </div>
+                        <!-- footer -->
+                        <div
+                            class="flex items-center justify-end border-t border-solid border-blueGray-200 rounded-b p-2">
+                            <button
+                                class="font-medium rounded-md border border-gray-300 bg-white px-4 py-2 text-base text-gray-700 shadow-sm 
                             hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 sm:mt-0 sm:ml-3 sm:w-auto sm:text-sm"
-                            type="button" (click)="closeCreateModal()" style="margin-right: 10px !important;">
-                            Close
-                        </button>
-                        <button
-                            class="font-medium rounded-md border border-transparent bg-green-600 px-4 py-2 text-base text-white shadow-sm hover:bg-green-700 
+                                type="button" (click)="closeCreateModal()" style="margin-right: 10px !important;">
+                                Close
+                            </button>
+                            <button
+                                class="font-medium rounded-md border border-transparent bg-green-600 px-4 py-2 text-base text-white shadow-sm hover:bg-green-700 
                             focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-offset-2 sm:ml-3 sm:w-auto sm:text-sm"
-                            type="submit" style="background-color: rgb(34 197 94) !important;"
-                            [disabled]="!createRoleForm.valid">
-                            Save
-                        </button>
+                                type="submit" style="background-color: rgb(34 197 94) !important;"
+                                [disabled]="!createRoleForm.valid">
+                                Save
+                            </button>
+                        </div>
                     </div>
-                </div>
                 </form>
             </div>
         </div>
@@ -171,10 +180,12 @@
     <!-- Create Role Modal END -->
 
     <!-- START Delete Modal -->
-    <div *ngIf="deleteModal" class="overflow-x-hidden overflow-y-auto fixed inset-0 z-30 outline-none focus:outline-none justify-center items-center flex">
+    <div *ngIf="deleteModal"
+        class="overflow-x-hidden overflow-y-auto fixed inset-0 z-30 outline-none focus:outline-none justify-center items-center flex">
         <div class="relative w-auto my-6 mx-auto max-w-3xl">
             <!--content-->
-            <div class="border-0 rounded-lg shadow-lg relative flex flex-col w-full bg-white outline-none focus:outline-none">
+            <div
+                class="border-0 rounded-lg shadow-lg relative flex flex-col w-full bg-white outline-none focus:outline-none">
                 <!--header-->
                 <div class="flex items-start justify-between p-4 border-b border-solid border-blueGray-200 rounded-t">
                     <h3 class="text-lg font-semibold">
@@ -189,21 +200,27 @@
                         </span>
                     </button>
                 </div>
-                <div class="relative transform overflow-hidden rounded-lg bg-white text-left shadow-xl transition-all sm:my-8 sm:w-full sm:max-w-lg">
+                <div
+                    class="relative transform overflow-hidden rounded-lg bg-white text-left shadow-xl transition-all sm:my-8 sm:w-full sm:max-w-lg">
                     <!--body-->
                     <div class="bg-white px-4 pt-5 pb-4 sm:p-6 sm:pb-4">
                         <div class="sm:flex sm:items-start">
-                          <div class="mx-auto flex h-12 w-12 flex-shrink-0 items-center justify-center rounded-full bg-red-100 sm:mx-0 sm:h-10 sm:w-10">
-                            <svg class="h-6 w-6 text-red-600" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" aria-hidden="true">
-                              <path stroke-linecap="round" stroke-linejoin="round" d="M12 10.5v3.75m-9.303 3.376C1.83 19.126 2.914 21 4.645 21h14.71c1.73 0 2.813-1.874 1.948-3.374L13.949 4.88c-.866-1.501-3.032-1.501-3.898 0L2.697 17.626zM12 17.25h.007v.008H12v-.008z" />
-                            </svg>
-                          </div>
-                          <div class="mt-3 text-center sm:mt-0 sm:ml-4 sm:text-left">
-                            <h3 class="text-lg font-medium leading-6 text-gray-900" id="modal-title">Delete role</h3>
-                            <div class="mt-2">
-                              <p class="text-sm text-gray-500">Are you sure you want to delete this role? All of his data will be permanently removed. This action cannot be undone.</p>
+                            <div
+                                class="mx-auto flex h-12 w-12 flex-shrink-0 items-center justify-center rounded-full bg-red-100 sm:mx-0 sm:h-10 sm:w-10">
+                                <svg class="h-6 w-6 text-red-600" xmlns="http://www.w3.org/2000/svg" fill="none"
+                                    viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" aria-hidden="true">
+                                    <path stroke-linecap="round" stroke-linejoin="round"
+                                        d="M12 10.5v3.75m-9.303 3.376C1.83 19.126 2.914 21 4.645 21h14.71c1.73 0 2.813-1.874 1.948-3.374L13.949 4.88c-.866-1.501-3.032-1.501-3.898 0L2.697 17.626zM12 17.25h.007v.008H12v-.008z" />
+                                </svg>
                             </div>
-                          </div>
+                            <div class="mt-3 text-center sm:mt-0 sm:ml-4 sm:text-left">
+                                <h3 class="text-lg font-medium leading-6 text-gray-900" id="modal-title">Delete role
+                                </h3>
+                                <div class="mt-2">
+                                    <p class="text-sm text-gray-500">Are you sure you want to delete this role? All of
+                                        his data will be permanently removed. This action cannot be undone.</p>
+                                </div>
+                            </div>
                         </div>
                     </div>
                     <!-- footer -->
@@ -214,10 +231,10 @@
                             type="button" (click)="closeDeleteModal()" style="margin-right: 10px !important;">
                             Close
                         </button>
-                        <button 
+                        <button
                             class="font-medium rounded-md border border-transparent bg-red-600 px-4 py-2 text-base text-white shadow-sm hover:bg-red-700 
                             focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-offset-2 sm:ml-3 sm:w-auto sm:text-sm"
-                            type="button" (click)="deleteRole()" >
+                            type="button" (click)="deleteRole()">
                             Delete
                         </button>
                     </div>
@@ -229,11 +246,13 @@
     <!-- END Delete Modal -->
 
     <!-- START Edit Modal -->
-    <div *ngIf="editModal" class="overflow-x-hidden overflow-y-auto fixed inset-0 z-30 outline-none focus:outline-none justify-center items-center flex"
-    style="width: 800px !important;">
+    <div *ngIf="editModal"
+        class="overflow-x-hidden overflow-y-auto fixed inset-0 z-30 outline-none focus:outline-none justify-center items-center flex"
+        style="width: 800px !important;">
         <div class="relative w-80 my-6 mx-auto max-w-3xl" style="width: 800px !important;">
             <!--content-->
-            <div class="border-0 rounded-lg shadow-lg relative flex flex-col w-full bg-white outline-none focus:outline-none" >
+            <div
+                class="border-0 rounded-lg shadow-lg relative flex flex-col w-full bg-white outline-none focus:outline-none">
                 <!--header-->
                 <div class="flex items-start justify-between p-4 border-b border-solid border-blueGray-200 rounded-t">
                     <h3 class="text-lg font-semibold">
@@ -248,46 +267,43 @@
                         </span>
                     </button>
                 </div>
-                <form [formGroup]="editRoleForm" (ngSubmit)="editRole()" >
-                <div class="relative transform overflow-hidden rounded-lg bg-white text-left shadow-xl transition-all sm:my-8 sm:w-full sm:max-w-lg">
-                    <!--body-->
-                    <div class="bg-white p-4 sm:p-6 sm:pb-4">
-                        <div class="relative w-full mb-3">
-                            <label
-                              class="block uppercase text-blueGray-600 text-xs font-bold mb-2"
-                              htmlFor="grid-password"
-                            >
-                              Role name
-                            </label>
-                            <input
-                              type="text"
-                              class="px-3 py-3 placeholder-blueGray-300 text-blueGray-600 relative bg-white bg-white rounded text-sm border border-blueGray-300 outline-none focus:outline-none focus:shadow-outline w-full"
-                              placeholder="Role name"
-                              formControlName="newrolename"
-                              [ngModel]="rolename"
-                            />
-                            <span class="inline-block align-middle mr-8 text-red-600" *ngIf="editRoleForm.get('newrolename').dirty&&!editRoleForm.get('newrolename').valid">
-                              This field is required.   
-                            </span>
+                <form [formGroup]="editRoleForm" (ngSubmit)="editRole()">
+                    <div
+                        class="relative transform overflow-hidden rounded-lg bg-white text-left shadow-xl transition-all sm:my-8 sm:w-full sm:max-w-lg">
+                        <!--body-->
+                        <div class="bg-white p-4 sm:p-6 sm:pb-4">
+                            <div class="relative w-full mb-3">
+                                <label class="block uppercase text-blueGray-600 text-xs font-bold mb-2"
+                                    htmlFor="grid-password">
+                                    Role name
+                                </label>
+                                <input type="text"
+                                    class="px-3 py-3 placeholder-blueGray-300 text-blueGray-600 relative bg-white bg-white rounded text-sm border border-blueGray-300 outline-none focus:outline-none focus:shadow-outline w-full"
+                                    placeholder="Role name" formControlName="newrolename" [ngModel]="rolename" />
+                                <span class="inline-block align-middle mr-8 text-red-600"
+                                    *ngIf="editRoleForm.get('newrolename').dirty&&!editRoleForm.get('newrolename').valid">
+                                    This field is required.
+                                </span>
+                            </div>
+                        </div>
+                        <!-- footer -->
+                        <div
+                            class="flex items-center justify-end border-t border-solid border-blueGray-200 rounded-b p-2">
+                            <button
+                                class="font-medium rounded-md border border-gray-300 bg-white px-4 py-2 text-base text-gray-700 shadow-sm 
+                            hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 sm:mt-0 sm:ml-3 sm:w-auto sm:text-sm"
+                                type="button" (click)="closeEditModal()" style="margin-right: 10px !important;">
+                                Close
+                            </button>
+                            <button
+                                class="font-medium rounded-md border border-transparent bg-green-600 px-4 py-2 text-base text-white shadow-sm hover:bg-green-700 
+                            focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-offset-2 sm:ml-3 sm:w-auto sm:text-sm"
+                                type="submit" style="background-color: rgb(34 197 94) !important;"
+                                [disabled]="!editRoleForm.valid">
+                                Save
+                            </button>
                         </div>
                     </div>
-                    <!-- footer -->
-                    <div class="flex items-center justify-end border-t border-solid border-blueGray-200 rounded-b p-2">
-                        <button
-                            class="font-medium rounded-md border border-gray-300 bg-white px-4 py-2 text-base text-gray-700 shadow-sm 
-                            hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 sm:mt-0 sm:ml-3 sm:w-auto sm:text-sm"
-                            type="button" (click)="closeEditModal()" style="margin-right: 10px !important;">
-                            Close
-                        </button>
-                        <button
-                            class="font-medium rounded-md border border-transparent bg-green-600 px-4 py-2 text-base text-white shadow-sm hover:bg-green-700 
-                            focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-offset-2 sm:ml-3 sm:w-auto sm:text-sm"
-                            type="submit" style="background-color: rgb(34 197 94) !important;"
-                            [disabled]="!editRoleForm.valid">
-                            Save
-                        </button>
-                    </div>
-                </div>
                 </form>
             </div>
         </div>
@@ -295,67 +311,129 @@
     <div *ngIf="editModal" class="opacity-25 fixed inset-0 z-30 bg-black"></div>
     <!-- END Edit Modal -->
 
-     <!-- START Assign Role Modal -->
-     <div *ngIf="assignAuthorityModal" class="overflow-x-hidden overflow-y-auto fixed inset-0 z-30 outline-none focus:outline-none justify-center items-center flex"
-     style="width: 800px !important;">
-         <div class="relative w-80 my-6 mx-auto max-w-3xl" style="width: 800px !important;">
-             <!--content-->
-             <div class="border-0 rounded-lg shadow-lg relative flex flex-col w-full bg-white outline-none focus:outline-none" >
-                 <!--header-->
-                 <div class="flex items-start justify-between p-4 border-b border-solid border-blueGray-200 rounded-t">
-                     <h3 class="text-lg font-semibold">
-                         Assign Authority
-                     </h3>
-                     <button
-                         class="ml-auto bg-transparent border-0 text-black opacity-5 float-right text-3xl leading-none font-semibold outline-none focus:outline-none"
-                         (click)="closeAssignAuthorityModal()">
-                         <span
-                             class="bg-transparent text-black opacity-5 h-6 w-6 text-2xl block outline-none focus:outline-none">
-                             ×
-                         </span>
-                     </button>
-                 </div>
-                 <div class="relative transform overflow-hidden rounded-lg bg-white text-left shadow-xl transition-all sm:my-8 sm:w-full sm:max-w-lg">
-                     <!--body-->
-                     <div class="bg-white px-4 pt-5 pb-4 sm:p-6 sm:pb-4">
-                         <div class="sm:flex sm:items-start">
-                             <div class="sm:flex sm:items-start">
-                                 <div class="mt-3 text-left sm:mt-0 sm:ml-4 sm:text-left" >
-                                   <h3 class="text-lg font-medium leading-6 text-gray-900" id="modal-title" style="padding: 10px !important;">Select Roles</h3>
-                                   <div class="mt-2" style="padding: 10px !important; padding-top: 5px !important;">
-                                         <ng-select
-                                             [items]="authoritiesNotAssigned"
-                                             bindLabel="authorityname"
-                                             placeholder="Select authorities"
-                                             appendTo="body"
-                                             [multiple]="true"
-                                             [(ngModel)]="selectedAuthorities">
-                                         </ng-select>
-                                   </div>
-                                 </div>
-                               </div>
-                         </div>
-                     </div>
-                     <!-- footer -->
-                     <div class="flex items-center justify-end border-t border-solid border-blueGray-200 rounded-b p-2">
-                         <button
-                             class="font-medium rounded-md border border-gray-300 bg-white px-4 py-2 text-base text-gray-700 shadow-sm 
+    <!-- START Assign Role Modal -->
+    <div *ngIf="assignAuthorityModal"
+        class="overflow-x-hidden overflow-y-auto fixed inset-0 z-30 outline-none focus:outline-none justify-center items-center flex"
+        style="width: 800px !important;">
+        <div class="relative w-80 my-6 mx-auto max-w-3xl" style="width: 800px !important;">
+            <!--content-->
+            <div
+                class="border-0 rounded-lg shadow-lg relative flex flex-col w-full bg-white outline-none focus:outline-none">
+                <!--header-->
+                <div class="flex items-start justify-between p-4 border-b border-solid border-blueGray-200 rounded-t">
+                    <h3 class="text-lg font-semibold">
+                        Assign Authority
+                    </h3>
+                    <button
+                        class="ml-auto bg-transparent border-0 text-black opacity-5 float-right text-3xl leading-none font-semibold outline-none focus:outline-none"
+                        (click)="closeAssignAuthorityModal()">
+                        <span
+                            class="bg-transparent text-black opacity-5 h-6 w-6 text-2xl block outline-none focus:outline-none">
+                            ×
+                        </span>
+                    </button>
+                </div>
+                <div
+                    class="relative transform overflow-hidden rounded-lg bg-white text-left shadow-xl transition-all sm:my-8 sm:w-full sm:max-w-lg">
+                    <!--body-->
+                    <div class="bg-white px-4 pt-5 pb-4 sm:p-6 sm:pb-4">
+                        <div class="sm:flex sm:items-start">
+                            <div class="sm:flex sm:items-start">
+                                <div class="mt-3 text-left sm:mt-0 sm:ml-4 sm:text-left">
+                                    <h3 class="text-lg font-medium leading-6 text-gray-900" id="modal-title"
+                                        style="padding: 10px !important;">Select Roles</h3>
+                                    <div class="mt-2" style="padding: 10px !important; padding-top: 5px !important;">
+                                        <ng-select [items]="authoritiesNotAssigned" bindLabel="authorityname"
+                                            placeholder="Select authorities" appendTo="body" [multiple]="true"
+                                            [(ngModel)]="selectedAuthorities">
+                                        </ng-select>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- footer -->
+                    <div class="flex items-center justify-end border-t border-solid border-blueGray-200 rounded-b p-2">
+                        <button
+                            class="font-medium rounded-md border border-gray-300 bg-white px-4 py-2 text-base text-gray-700 shadow-sm 
                              hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 sm:mt-0 sm:ml-3 sm:w-auto sm:text-sm"
-                             type="button" (click)="closeAssignAuthorityModal()" style="margin-right: 10px !important;">
-                             Close
-                         </button>
-                         <button
-                             class="font-medium rounded-md border border-transparent bg-green-600 px-4 py-2 text-base text-white shadow-sm hover:bg-green-700 
+                            type="button" (click)="closeAssignAuthorityModal()" style="margin-right: 10px !important;">
+                            Close
+                        </button>
+                        <button
+                            class="font-medium rounded-md border border-transparent bg-green-600 px-4 py-2 text-base text-white shadow-sm hover:bg-green-700 
                              focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-offset-2 sm:ml-3 sm:w-auto sm:text-sm"
-                             type="button" (click)="assignAuthority()" style="background-color: rgb(34 197 94) !important;">
-                             Save
-                         </button>
-                     </div>
-                 </div>
-             </div>
-         </div>
-     </div>
-     <div *ngIf="assignAuthorityModal" class="opacity-25 fixed inset-0 z-30 bg-black"></div>
-     <!-- END Assign Role Modal -->
+                            type="button" (click)="assignAuthority()"
+                            style="background-color: rgb(34 197 94) !important;">
+                            Save
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div *ngIf="assignAuthorityModal" class="opacity-25 fixed inset-0 z-30 bg-black"></div>
+    <!-- END Assign Role Modal -->
+
+    <!-- START Reject Role Modal -->
+    <div *ngIf="rejectAuthorityModal"
+        class="overflow-x-hidden overflow-y-auto fixed inset-0 z-30 outline-none focus:outline-none justify-center items-center flex"
+        style="width: 800px !important;">
+        <div class="relative w-80 my-6 mx-auto max-w-3xl" style="width: 800px !important;">
+            <!--content-->
+            <div
+                class="border-0 rounded-lg shadow-lg relative flex flex-col w-full bg-white outline-none focus:outline-none">
+                <!--header-->
+                <div class="flex items-start justify-between p-4 border-b border-solid border-blueGray-200 rounded-t">
+                    <h3 class="text-lg font-semibold">
+                        Reject Authority
+                    </h3>
+                    <button
+                        class="ml-auto bg-transparent border-0 text-black opacity-5 float-right text-3xl leading-none font-semibold outline-none focus:outline-none"
+                        (click)="closeRejectAuthorityModal()">
+                        <span
+                            class="bg-transparent text-black opacity-5 h-6 w-6 text-2xl block outline-none focus:outline-none">
+                            ×
+                        </span>
+                    </button>
+                </div>
+                <form [formGroup]="rejectAuthorityForm" (ngSubmit)="rejectAuthority()">
+                    <div
+                        class="relative transform overflow-hidden rounded-lg bg-white text-left shadow-xl transition-all sm:my-8 sm:w-full sm:max-w-lg">
+                        <!--body-->
+                        <ul class="bg-white px-4 pt-5 pb-4 sm:p-6 sm:pb-4" style="padding: 10px !important;"
+                            formArrayName="rejectedAuthorities">
+                            <li class="flex items-center" style="padding: 10px !important;" [formGroupName]="i"
+                                *ngFor="let item of refForm.controls; let i = index">
+                                <input checked id=`${i}` type="checkbox" value=`${item.value.name}`
+                                    formControlName="checked"
+                                    class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600">
+                                <label for=`${i}`
+                                    class="ml-2 text-sm font-medium text-gray-900 dark:text-gray-300">{{item.value.name}}</label>
+                            </li>
+                        </ul>
+                        <!-- footer -->
+                        <div
+                            class="flex items-center justify-end border-t border-solid border-blueGray-200 rounded-b p-2">
+                            <button (click)="closeRejectAuthorityModal()"
+                                class="font-medium rounded-md border border-gray-300 bg-white px-4 py-2 text-base text-gray-700 shadow-sm 
+                                 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 sm:mt-0 sm:ml-3 sm:w-auto sm:text-sm"
+                                type="button" style="margin-right: 10px !important;">
+                                Close
+                            </button>
+                            <button
+                                class="font-medium rounded-md border border-transparent bg-green-600 px-4 py-2 text-base text-white shadow-sm hover:bg-green-700 
+                                 focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-offset-2 sm:ml-3 sm:w-auto sm:text-sm"
+                                type="submit" style="background-color: rgb(34 197 94) !important;">
+                                Save
+                            </button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+    <div *ngIf="rejectAuthorityModal" class="opacity-25 fixed inset-0 z-30 bg-black"></div>
+    <!-- END Reject Role Modal -->
 
 </div>

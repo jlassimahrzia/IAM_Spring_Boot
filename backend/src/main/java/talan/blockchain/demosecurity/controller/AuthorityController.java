@@ -10,7 +10,7 @@ import talan.blockchain.demosecurity.services.interfaces.AuthorityService;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/authority")
+@RequestMapping("/api/authority/")
 public class AuthorityController {
 
     private final AuthorityService authorityService;
@@ -19,22 +19,22 @@ public class AuthorityController {
         this.authorityService = authorityService;
     }
 
-    @PostMapping("/save")
+    @PostMapping("save")
     Authority saveAuthority(@RequestBody Authority authority){
         return authorityService.saveAuthority(authority);
     }
 
-    @GetMapping("/list")
+    @GetMapping("list")
     List<Authority> getAuthorities(){
         return authorityService.getAuthority();
     }
 
-    @PutMapping("/update")
+    @PutMapping("update")
     Authority updateAuthorityByAuthorityname(@RequestBody UpdateDTO<Authority> roleDTO){
         return authorityService.updateAuthorityByAuthorityName(roleDTO.getName(), roleDTO.getNewValues());
     }
 
-    @DeleteMapping("/delete")
+    @DeleteMapping("delete")
     int deleteAuthorityByAuthorityname(@RequestBody DeleteDTO deleteDTO){
         return authorityService.deleteByAuthorityName(deleteDTO.getName());
     }

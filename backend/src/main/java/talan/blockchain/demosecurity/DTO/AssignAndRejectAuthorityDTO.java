@@ -10,7 +10,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @EqualsAndHashCode
 
-public class AssignAuthorityDTO {
+public class AssignAndRejectAuthorityDTO {
     private String roleName;
     private String authorityName;
 }
