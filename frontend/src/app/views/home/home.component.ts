@@ -50,8 +50,8 @@ export class HomeComponent implements OnInit {
     this.roleService.getRoles().subscribe({
       next : (res: Role[]) => {
         this.rolesNumber = res.length;
-        this.roles = res;
-        this.setNumberOfEmployeesOfEachRole()
+        this.roles = res;   
+        this.setNumberOfEmployeesOfEachRole();   
       },
       error: err => {
         console.log("err", err);

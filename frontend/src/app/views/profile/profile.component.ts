@@ -5,6 +5,8 @@ import { EmployeeService } from 'src/app/services/employee.service';
 import { Token } from "src/app/models/token.model";
 import { FormBuilder, FormGroup, Validators  } from '@angular/forms';
 import { ToastrService } from 'ngx-toastr';
+import { DomSanitizer } from '@angular/platform-browser'; 
+
 @Component({
   selector: 'app-profile',
   templateUrl: './profile.component.html',
@@ -14,6 +16,9 @@ import { ToastrService } from 'ngx-toastr';
 export class ProfileComponent {
 
   user : Employee ;
+
+  image : any;   
+  private readonly imageType : string = 'data:image/PNG;base64,'; 
 
   updateProfileForm : FormGroup = this.fb.group({
     firstName: [ null , [
@@ -38,11 +43,12 @@ export class ProfileComponent {
 
   constructor(private jwtService: JwtService,
     private employeeService : EmployeeService,
+    private sanitizer: DomSanitizer,
     private fb: FormBuilder,
     private toastr: ToastrService){}
 
   ngOnInit(): void {
-    this.getUserInformation()
+    this.getUserInformation();
   }
 
   getUserInformation() : void {
@@ -50,12 +56,25 @@ export class ProfileComponent {
     this.employeeService.loadUserData(tokendecode.sub).subscribe({
       next : (res : Employee) => {
         this.user = res ;
-        console.log(this.user);
       },
       error: err => {
         console.log("err", err);
+      },
+      complete: ()  => {
+        this.getImage()
       }
     })  
+  }
+
+  getImage() : void {
+    this.employeeService.getImage(this.user?.image).subscribe({
+        next : (data : any ) => {  
+          this.image = this.sanitizer.bypassSecurityTrustUrl(this.imageType + data.content); 
+        },
+        error: err => {
+          console.log("err", err)
+        }
+    })
   }
 
   /** Update Profile */
@@ -88,6 +107,67 @@ export class ProfileComponent {
         this.toastr.error('Something went wrong!','Error')
       }
     })
+  }
+
+  /** change profile image */
+  uploadedImage: File;
+  imagename : string = null;
+  imageValidation: Boolean;
+
+
+  changeUploadImage() : void {
+    this.employeeService.uploadImage(this.uploadedImage).subscribe({
+      next : (result : any) => {
+        this.imagename = result.filename ;
+        console.log("imagename", result.filename , this.imagename);
+        
+      },
+      error: err => {
+        console.log("err", err)
+        this.toastr.error('Error while uploading image!', 'Error')
+      },
+      complete : () => {
+        this.employeeService.changeImage(this.user.username , this.imagename).subscribe({
+          next : (res: Employee) => {
+            this.toastr.success('Image changed successfully!', 'Success')
+            this.user = res ;
+           
+          },
+          error: err => {
+            console.log("err", err)
+            this.toastr.error('Something went wrong!','Error')
+          },
+          complete : () => {
+          }
+        })
+        this.getImage()
+      }
+    })
+  }
+  
+
+
+  public initUpload() {
+    let fileInput = document.getElementById('upload');
+    console.log(fileInput);
+    if (fileInput)
+      fileInput.click();
+    else
+      console.log('ERROR: cannot find file input');
+  }
+
+  public onChange(event): void {
+    let files = event.target.files;
+    let file = files[0];
+    this.imageValidation = true;
+    if (file.type !== 'image/jpeg' && file.type !== 'image/png' && file.type !== 'image/jpeg') {
+      this.imageValidation = false;
+    }
+    if(this.imageValidation){       
+      this.uploadedImage = file;
+      this.changeUploadImage()
+    }
+    
   }
 
 }

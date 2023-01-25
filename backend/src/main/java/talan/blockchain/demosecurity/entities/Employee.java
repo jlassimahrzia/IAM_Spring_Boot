@@ -27,6 +27,8 @@ public class Employee implements Serializable {
     private String username;
     @Column(nullable = false)
     private String password;
+    @Column(nullable = true)
+    private String image;
     private boolean isEnable = true;
     @ManyToMany
     private List<Role> roles = new ArrayList<>();

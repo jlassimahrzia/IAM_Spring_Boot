@@ -1,4 +1,4 @@
-package talan.blockchain.demosecurity.security;
+package talan.blockchain.demosecurity.utils;
 
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
@@ -9,6 +9,7 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.stereotype.Component;
+import talan.blockchain.demosecurity.security.SecurityConstante;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -23,7 +24,7 @@ public class JWTUtils {
 
         return Jwts.builder()
                 .setSubject(springUser.getUsername())
-                .setExpiration(new Date(System.currentTimeMillis()+SecurityConstante.EXPIRATION_TIME))
+                .setExpiration(new Date(System.currentTimeMillis()+ SecurityConstante.EXPIRATION_TIME))
                 .claim("authorities", springUser.getAuthorities())
                 .signWith(SignatureAlgorithm.HS256, SecurityConstante.SECRET)
                 .compact();

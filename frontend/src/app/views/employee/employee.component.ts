@@ -5,7 +5,7 @@ import { ToastrService } from 'ngx-toastr';
 import { Role } from "src/app/models/role.model";
 import { RoleService } from "src/app/services/role.service";
 import { FormGroup, FormControl, FormArray } from '@angular/forms';
-
+import { DomSanitizer } from '@angular/platform-browser';
 
 @Component({
   selector: 'app-employee',
@@ -35,8 +35,12 @@ export class EmployeeComponent implements OnInit {
 
   searchText : string ;
   
+  private readonly imageType : string = 'data:image/PNG;base64,'; 
+  employeeFinalList : any[] = [];
+
   constructor(private employeeService: EmployeeService,
     private toastr: ToastrService,
+    private sanitizer: DomSanitizer,
     private roleService: RoleService) { }
 
   ngOnInit(): void {
@@ -54,8 +58,27 @@ export class EmployeeComponent implements OnInit {
       },
       error: err => {
         console.log("err", err);
+      },
+      complete : () => {
+        this.setImageForEmployees()
       }
     });
+  }
+  
+  setImageForEmployees() : void {
+
+    this.employees.forEach(employee => {
+      this.employeeService.getImage(employee?.image).subscribe({
+        next : (data : any ) => {  
+          let employee2 = {...employee, imageBase64 : this.sanitizer.bypassSecurityTrustUrl(this.imageType + data.content)};        
+          this.employeeFinalList.push(employee2);     
+        },
+        error: err => {
+          console.log("err", err);
+        }
+      }) 
+    });
+
   }
 
   getRolesList() : void {

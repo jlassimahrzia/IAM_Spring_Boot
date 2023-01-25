@@ -29,7 +29,6 @@ export class AdminNavbarComponent implements OnInit {
     this.employeeService.loadUserData(tokendecode.sub).subscribe({
       next : (res : Employee) => {
         this.user = res ;
-        console.log(this.user);
       },
       error: err => {
         console.log("err", err);

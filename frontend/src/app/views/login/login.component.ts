@@ -44,7 +44,7 @@ export class LoginComponent implements OnInit {
           }, 
           error: err => {
             console.log("err", err)
-            this.toastr.error('Something went wrong!','Error')
+            this.toastr.error('The credentials are incorrect!','Error')
           }
         })
 

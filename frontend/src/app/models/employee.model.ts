@@ -6,6 +6,7 @@ export class Employee {
     lastName: string;
     username: string;
     password?: string;
+    image?: string;
     roles?: Array<Role>;
     enable?: boolean;
 }

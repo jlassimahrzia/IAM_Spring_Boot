@@ -2,16 +2,26 @@ package talan.blockchain.demosecurity.services.implementations;
 
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.io.ClassPathResource;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.util.StringUtils;
+import org.springframework.web.multipart.MultipartFile;
+import talan.blockchain.demosecurity.DTO.ChangeImageProfileDTO;
+import talan.blockchain.demosecurity.DTO.ImageUploadDTO;
 import talan.blockchain.demosecurity.DTO.UpdateUserInfoDTO;
 import talan.blockchain.demosecurity.dao.EmployeeRepository;
 import talan.blockchain.demosecurity.dao.RoleRepository;
 import talan.blockchain.demosecurity.entities.Employee;
 import talan.blockchain.demosecurity.entities.Role;
 import talan.blockchain.demosecurity.services.interfaces.EmployeeService;
+import talan.blockchain.demosecurity.utils.FileUploadUtil;
 
-import java.util.List;
+import java.io.File;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.util.*;
+
 @Service
 @Transactional
 public class EmployeeServiceImpl implements EmployeeService {
@@ -28,7 +38,7 @@ public class EmployeeServiceImpl implements EmployeeService {
     }
 
     @Override
-    public Employee saveEmployee(Employee employee) {
+    public Employee saveEmployee(Employee employee){
         Employee employee1;
         employee1 = employeeRepository.findByUsername(employee.getUsername());
         if(employee1 == null){
@@ -37,6 +47,17 @@ public class EmployeeServiceImpl implements EmployeeService {
             employee1 = employeeRepository.save(employee);
         }
         return employee1;
+    }
+
+    @Override
+    public ImageUploadDTO uploadImage(MultipartFile file) throws IOException {
+        String fileName = StringUtils.cleanPath(file.getOriginalFilename());
+        String extension = fileName.substring(fileName.lastIndexOf(".") + 1);
+        String uploadDir = "src/main/resources/images/";
+        String filename = UUID.randomUUID().toString()+"."+extension;
+        FileUploadUtil.saveFile(uploadDir, filename, file);
+        ImageUploadDTO imageUploadDTO = new ImageUploadDTO(filename);
+        return imageUploadDTO;
     }
 
     @Override
@@ -109,6 +130,26 @@ public class EmployeeServiceImpl implements EmployeeService {
     @Override
     public Employee getUserByUsername(String username){
         return employeeRepository.findByUsername(username);
+    }
+
+    @Override
+    public Employee updateProfileImage(ChangeImageProfileDTO changeImageProfileDTO) {
+        Employee employee = employeeRepository.findByUsername(changeImageProfileDTO.getUsername());
+        if(employee != null){
+            String uploadDir = "src/main/resources/images/";
+            if(employee.getImage().equals("avatardefault.png")){
+                employee.setImage(changeImageProfileDTO.getNewImage());
+                return employeeRepository.save(employee);
+
+            }
+            else {
+                if(FileUploadUtil.deleteFile(uploadDir, employee.getImage())){
+                    employee.setImage(changeImageProfileDTO.getNewImage());
+                    return employeeRepository.save(employee);
+                };
+            }
+        }
+        return null;
     }
 
 }

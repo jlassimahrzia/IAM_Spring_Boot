@@ -17,6 +17,8 @@ export class AuthService {
   }
 
   register(employee : Employee) : Observable<Employee> {
+    console.log("from service", employee);
+    
     return  this.httpClient.post<Employee>(`${environment.SERVER_API_URL}/employee/save`, employee);
   }
 

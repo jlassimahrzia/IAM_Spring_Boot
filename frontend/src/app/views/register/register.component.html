@@ -82,15 +82,32 @@
                   formControlName="password"
                 />
                 <span class="inline-block align-middle mr-8 text-red-600" *ngIf="registerForm.get('password').dirty&&!registerForm.get('password').valid">
-                  Password must contain more than 8 characters, 1 upper case letter, and 1 special character               
+                  Password must contain more than 8 characters, 1 upper case letter, and 1 special character.              
                 </span>
               </div>
 
+              <div class="relative w-full mb-3">
+                <label class="block uppercase text-blueGray-600 text-xs font-bold mb-2" for="user_avatar">Upload file</label>              
+                <input 
+                  class="block w-full text-sm text-gray-900 border border-gray-300 rounded cursor-pointer bg-white dark:text-gray-400 focus:outline-none dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400" 
+                  id="file_input" 
+                  type="file" 
+                  (change)="handleFileSelect($event)" 
+                  accept="image/*"
+                  formControlName="image">
+                  <span class="inline-block align-middle mr-8 text-red-600" *ngIf="registerForm.get('image').dirty&&!registerForm.get('image').valid">
+                    This field is required.           
+                  </span>
+                  <span class="inline-block align-middle mr-8 text-red-600" *ngIf="imageValidation === false">
+                    The format is not supported.              
+                  </span>
+              </div> 
+              
               <div class="text-center mt-6">
                 <button
                   class="bg-blueGray-800 text-white active:bg-blueGray-600 text-sm font-bold uppercase px-6 py-3 rounded shadow hover:shadow-lg outline-none focus:outline-none mr-1 mb-1 w-full ease-linear transition-all duration-150"
                   type="submit"
-                  [disabled]="!registerForm.valid"
+                  [disabled]="!registerForm.valid || imageValidation === false"
                 >
                   Create Account
                 </button>
@@ -109,4 +126,6 @@
       </div>
     </div>
 </div>
+
+
   

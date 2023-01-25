@@ -26,10 +26,10 @@ public class SecurityConfig {
 
         http.csrf().disable()
                 .authorizeHttpRequests()
-                .requestMatchers("/login","/api/employee/save").permitAll()
+                .requestMatchers("/login","/api/employee/save","/api/employee/saveimage","/api/employee/image/**","/api/employee/image/delete/**").permitAll()
                 .requestMatchers(HttpMethod.POST,"/api/role/save", "/api/authority/save").hasAuthority("CREATE")
                 .requestMatchers(HttpMethod.PUT,"/api/employee/changePassword", "/api/employee/updateProfile","/api/role/update","/api/authority/update"
-                        ,"/api/role/assignAuthority","/api/employee/assignRole","/api/employee/rejectRole","/api/role/rejectAuthority").hasAuthority("UPDATE")
+                        ,"/api/role/assignAuthority","/api/employee/assignRole","/api/employee/rejectRole","/api/role/rejectAuthority","/api/employee/changeProfileImage").hasAuthority("UPDATE")
                 .requestMatchers(HttpMethod.DELETE,"/api/employee/delete/*","/api/role/delete","/api/authority/delete").hasAuthority("DELETE")
                 .requestMatchers(HttpMethod.GET,"/api/employee/list","/api/employee/loadUser/*","/api/role/list","/api/authority/list").hasAuthority("READ")
                 .anyRequest().authenticated()

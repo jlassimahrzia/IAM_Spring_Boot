@@ -1,11 +1,23 @@
 package talan.blockchain.demosecurity.controller;
 
+import org.springframework.core.io.ClassPathResource;
+import org.springframework.core.io.Resource;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 import talan.blockchain.demosecurity.DTO.*;
 import talan.blockchain.demosecurity.entities.Employee;
 import talan.blockchain.demosecurity.services.interfaces.EmployeeService;
+import talan.blockchain.demosecurity.utils.FileUploadUtil;
 
+import java.io.File;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.util.Base64;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/api/employee/")
@@ -21,6 +33,11 @@ public class EmployeeController {
     @PostMapping("save")
     Employee saveEmployee(@RequestBody Employee employee){
         return employeeService.saveEmployee(employee);
+    }
+
+    @PostMapping("/saveimage")
+    ImageUploadDTO  uploadImage(@RequestParam("file") MultipartFile file) throws IOException {
+        return employeeService.uploadImage(file);
     }
 
     @GetMapping("list")
@@ -62,5 +79,18 @@ public class EmployeeController {
     Employee loadUserByUsername(@PathVariable String username){
         return employeeService.getUserByUsername(username);
     }
+
+    @GetMapping("/image/{imagename}")
+    public @ResponseBody Map<String, String> getImage(@PathVariable String imagename) throws IOException {
+        return FileUploadUtil.getFile(imagename);
+    }
+
+    @PutMapping("/changeProfileImage")
+    public Employee changeProfileImage(@RequestBody ChangeImageProfileDTO changeImageProfileDTO) {
+        System.out.println(changeImageProfileDTO);
+        return employeeService.updateProfileImage(changeImageProfileDTO);
+    }
+
+
 
 }
