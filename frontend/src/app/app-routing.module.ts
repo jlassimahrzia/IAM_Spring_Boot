@@ -16,22 +16,27 @@ const routes: Routes = [
     path: "auth",
     component: AuthComponent,
     children: [
-      {path: "login", component: LoginComponent},
-      {path: "register", component: RegisterComponent},
-      {path: "", redirectTo: "login", pathMatch: "full"}
+      { path: "login", component: LoginComponent },
+      { path: "register", component: RegisterComponent },
+      { path: "", redirectTo: "login", pathMatch: "full" }
     ]
   },
   {
     path: "admin",
     component: AdminComponent,
     children: [
-      {path: "home", component: HomeComponent},
-      {path: "employee", component: EmployeeComponent},
-      {path: "role", component: RoleComponent},
-      {path: "authority", component: AuthorityComponent},
-      {path: "profile", component: ProfileComponent},
-      {path: "", redirectTo: "home", pathMatch: "full"}
+      { path: "home", component: HomeComponent },
+      { path: "employee", component: EmployeeComponent },
+      { path: "role", component: RoleComponent },
+      { path: "authority", component: AuthorityComponent },
+      { path: "profile", component: ProfileComponent },
+      { path: "", redirectTo: "home", pathMatch: "full" }
     ]
+  },
+  { 
+    path: '', 
+    redirectTo: '/auth/login', 
+    pathMatch: 'full' 
   }
 ];
 

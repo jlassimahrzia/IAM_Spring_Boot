@@ -1,13 +1,9 @@
 package talan.blockchain.demosecurity.utils;
 
 import org.springframework.core.io.ClassPathResource;
-import org.springframework.core.io.Resource;
-import org.springframework.core.io.UrlResource;
 import org.springframework.web.multipart.MultipartFile;
-import talan.blockchain.demosecurity.Exceptions.StorageFileNotFoundException;
 
 import java.io.*;
-import java.net.MalformedURLException;
 import java.nio.file.*;
 import java.util.Base64;
 import java.util.HashMap;

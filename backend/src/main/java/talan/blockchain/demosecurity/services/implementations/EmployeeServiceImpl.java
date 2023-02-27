@@ -2,7 +2,6 @@ package talan.blockchain.demosecurity.services.implementations;
 
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.core.io.ClassPathResource;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
@@ -17,9 +16,7 @@ import talan.blockchain.demosecurity.entities.Role;
 import talan.blockchain.demosecurity.services.interfaces.EmployeeService;
 import talan.blockchain.demosecurity.utils.FileUploadUtil;
 
-import java.io.File;
 import java.io.IOException;
-import java.nio.file.Files;
 import java.util.*;
 
 @Service
@@ -140,7 +137,6 @@ public class EmployeeServiceImpl implements EmployeeService {
             if(employee.getImage().equals("avatardefault.png")){
                 employee.setImage(changeImageProfileDTO.getNewImage());
                 return employeeRepository.save(employee);
-
             }
             else {
                 if(FileUploadUtil.deleteFile(uploadDir, employee.getImage())){

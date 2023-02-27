@@ -3,8 +3,6 @@ package talan.blockchain.demosecurity.dao;
 import org.springframework.data.jpa.repository.JpaRepository;
 import talan.blockchain.demosecurity.entities.Employee;
 
-import java.util.Optional;
-
 /* on peut ajouter la pagination des données */
 public interface EmployeeRepository extends JpaRepository<Employee, Long> {
 

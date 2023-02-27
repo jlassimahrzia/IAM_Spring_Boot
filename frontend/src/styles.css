@@ -1,2 +1,17 @@
 /* You can add global styles to this file, and also import other style files */
 @import "~@ng-select/ng-select/themes/default.theme.css";
+
+input[type=file]::file-selector-button {
+    margin-left: 2px;
+    border: none;
+    background: #1e293b;
+    padding: 10px 10px;
+    border-radius: 10px;
+    color: #fff;
+    cursor: pointer;
+    transition: "#084cdf2" .2s ease-in-out;
+}
+
+input[type=file]::file-selector-button:hover {
+    background: #475569;
+}

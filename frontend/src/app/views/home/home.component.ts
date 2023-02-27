@@ -31,7 +31,7 @@ export class HomeComponent implements OnInit {
     this.getEmployeesNumber()
     this.getRolesNumber()
     this.getAuthorityNumber()
-   
+    
   }
 
   getEmployeesNumber() : void {

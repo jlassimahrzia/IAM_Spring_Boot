@@ -40,7 +40,7 @@ export class LoginComponent implements OnInit {
             localStorage.setItem('token',jwt.substr(7))
             this.toastr.success('Logged in successfully.','Success')
             this.loginForm.reset()
-            this.router.navigate(['/admin/employee'])
+            this.router.navigate(['/admin/home'])
           }, 
           error: err => {
             console.log("err", err)

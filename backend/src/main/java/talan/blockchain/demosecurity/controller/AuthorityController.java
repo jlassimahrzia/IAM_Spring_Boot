@@ -4,7 +4,6 @@ import org.springframework.web.bind.annotation.*;
 import talan.blockchain.demosecurity.DTO.DeleteDTO;
 import talan.blockchain.demosecurity.DTO.UpdateDTO;
 import talan.blockchain.demosecurity.entities.Authority;
-import talan.blockchain.demosecurity.entities.Role;
 import talan.blockchain.demosecurity.services.interfaces.AuthorityService;
 
 import java.util.List;

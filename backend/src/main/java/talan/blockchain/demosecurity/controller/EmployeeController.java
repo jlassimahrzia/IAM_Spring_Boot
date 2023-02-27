@@ -1,9 +1,5 @@
 package talan.blockchain.demosecurity.controller;
 
-import org.springframework.core.io.ClassPathResource;
-import org.springframework.core.io.Resource;
-import org.springframework.http.HttpHeaders;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import talan.blockchain.demosecurity.DTO.*;
@@ -11,11 +7,7 @@ import talan.blockchain.demosecurity.entities.Employee;
 import talan.blockchain.demosecurity.services.interfaces.EmployeeService;
 import talan.blockchain.demosecurity.utils.FileUploadUtil;
 
-import java.io.File;
 import java.io.IOException;
-import java.nio.file.Files;
-import java.util.Base64;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
